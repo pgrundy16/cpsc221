@@ -61,6 +61,7 @@ std::vector<int> to_vector(Node* head) {
 void delete_last_element(Node*& head){
   if(head == NULL) return;
 
+  // use prev b/c you want to point second last node to NULL
   Node* it = head;
   Node* prev = head;
 
@@ -69,7 +70,7 @@ void delete_last_element(Node*& head){
     it = it->next;
   }
 
-  // if one node only
+  // if one node only: treat diff b/c no previous nodes
   if(it == prev && it == head) {
     delete(head);
     head = NULL;
@@ -197,7 +198,8 @@ Node* interleave(Node* list1, Node* list2){
         ret_list->key = list2->key;       
         ret_list->next = interleave(list1, list2->next); 
     
-    // when neither l1 nor l2 is empty
+    // when neither l1 nor l2 is empty: 
+    // switch lists each recursive call to alternate insert turns
     } else {  
         ret_list->key = list1->key;
         ret_list->next = interleave(list2, list1->next); 

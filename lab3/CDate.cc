@@ -11,7 +11,7 @@ CDate::CDate(void){
 	m_year = m_month = m_day = 0;
 }
 
-CDate::CDate(int year, int month, int day){
+CDate::CDate(int year, int month,0 int day){
 	setDate( year, month, day );        
 }
 
@@ -61,12 +61,12 @@ bool CDate::isValidDay(int year, int month, int day){
 
 	switch (month) {
 		// 31 days cases
-		case 1: return day <= 31;
-		case 3: return day <= 31;
-		case 5: return day <= 31;
-		case 7: return day <= 31;
-		case 8: return day <= 31;
-		case 10: return day <= 31;
+		case 1: 
+		case 3: 
+		case 5: 
+		case 7: 
+		case 8: 
+		case 10: 
 		case 12: return day <= 31;
 
 		case 2:
@@ -77,9 +77,9 @@ bool CDate::isValidDay(int year, int month, int day){
 			else return day <= 29;
 
 		// 30 days cases
-		case 4: return day <= 30;
-		case 6: return day <= 30;
-		case 9: return day <= 30;
+		case 4: 
+		case 6: 
+		case 9: 
 		case 11: return day <= 30;
 		default: break; 
 	}

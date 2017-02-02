@@ -5,7 +5,7 @@
 #include <iostream>
 #include "LQueue.h"
 using namespace std;
-	
+  
 
 void print(Queue q)
 { q.display(cout); }
@@ -34,6 +34,13 @@ int main(void)
    cout << "Queue q2 empty? " << q2.empty() << endl;
 
    cout << "Front value in q2: " << q2.front() << endl;
+
+/* ====== Eduardo Testing Part A ======== */
+   cout << "Moving elements" << endl;
+   Queue::move_to_front(q1, 300);
+   print(q2);
+
+
 
    while (!q2.empty())
    {

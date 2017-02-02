@@ -1,4 +1,4 @@
---- LQueue.cpp ----------------------------------------------------------
+/*--- LQueue.cpp ----------------------------------------------------------
   This file implements LQueue member functions.
   From:  "ADTs, Data Structures, and Problem Solving with C++", 2nd edition
          by Larry Nyhoff
@@ -10,16 +10,14 @@ using namespace std;
 #include "LQueue.h"
 
 //--- Definition of Queue constructor
-Queue::Queue(): myFront(0), myBack(0)
-{
-
-}
+Queue::Queue()
+: myFront(0), myBack(0)
+{}
 
 //--- Definition of Queue copy constructor
 Queue::Queue(const Queue & original)
 {
    myFront = myBack = 0;
-   // when the Queue is not empty
    if (!original.empty())
    {
       // Copy first node
@@ -53,7 +51,7 @@ Queue::~Queue()
 //--- Definition of assignment operator
 const Queue & Queue::operator=(const Queue & rightHandSide)
 {
-   if (this != &rightHandSide)         // check that not q = q (same addr)
+   if (this != &rightHandSide)         // check that not q = q
    {
       this->~Queue();                  // destroy current linked list
       if (rightHandSide.empty())       // empty queue
@@ -130,12 +128,11 @@ void Queue::dequeue()
       cerr << "*** Queue is empty -- can't remove a value ***\n";
 }
 
-/* ======== Part 1 ======== */
 
- //--- Search through a queue for a particular key value
- //--- If found, move node to front
- /* Edited by Eduardo : 5:56 PM Feb 1, 2017 */
-void Queue::move_to_front(const Queue & q1, const QueueElement & el) 
+//--- Search through a queue for a particular key value
+//--- If found, move node to front
+/* Edited by Eduardo : 5:56 PM Feb 1, 2017 */
+void Queue::move_to_front(Queue & q1, const QueueElement & el) 
 {
 	// return when empty, or only one node
 	if(q1.empty() || (q1.myFront && q1.myFront == q1.myBack)) return; 
@@ -158,7 +155,7 @@ void Queue::move_to_front(const Queue & q1, const QueueElement & el)
 		return;
 
 	// key is found at last node
-	} else if(!(it->next) && it->key == el ) {
+	} else if(!(it->next) && it->data == el ) {
 		// prev points to NULL (bc last el)
 		prev->next = 0;
 
@@ -181,7 +178,7 @@ void Queue::move_to_front(const Queue & q1, const QueueElement & el)
 //--- Takes q1 and q2 as two Queues and merges them
 //--- into a single queue with absolute order kept
 /* Edited by Eduardo : 7:33 PM Feb 1, 2017 */
-void Queue::merge_two_queues(const Queue & q2) {
+/*void Queue::merge_two_queues(const Queue & q2) {
 	if(q2.empty()) return * this;
 
 	// point the back of q1 to beg of q2
@@ -226,7 +223,7 @@ void Queue::merge_two_queues(const Queue & q2) {
 		} else if() {
 
 
-		} else { /* no switch */ }
+		} else {  }
 
 
 
@@ -235,29 +232,8 @@ void Queue::merge_two_queues(const Queue & q2) {
 		index = index->next;
 	}
 
-	return this*l=;
-} 
+	return this*; 
+	return NULL;
+} */
 
 
-/* ======== Part 2 ======== */
-/* 
-For each minute, generate two random numbers:
-num1 % 60 < landingRate:		
-				"landing request" has been generated & plane is added to 'landing' queue
-
-num2 < takeoffRate:
-				"takeoff request" has been generated & plane is added to 'takeoff queue'
-
-NEXT:
-	= check if runway is free
-		if true :
-			check if landing queue is non-empty 1st and allow planes to land
-			ELSE, consider the takeoff queue
-
-	= have program calculate the maximum queue length and average time that a plane 
-		spends in a queue
-	
-	** DO NOT add priv elements to class. it is not necessary. 		
-*/
-
- 

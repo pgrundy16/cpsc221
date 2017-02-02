@@ -108,6 +108,8 @@ class Queue
         queue is empty; in that case, an error message is displayed 
         and execution allowed to proceed.
   -----------------------------------------------------------------------*/
+  static void move_to_front(Queue & q1, const QueueElement & el);
+  // void merge_two_queues(const Queue & q2);
 
  private:
    /*** Node class ***/

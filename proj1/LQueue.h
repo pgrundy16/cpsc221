@@ -109,7 +109,7 @@ class Queue
         and execution allowed to proceed.
   -----------------------------------------------------------------------*/
 
-  /* ======== Part A - by Eduardo Garza ======== */
+/* ======== Part A - by Eduardo Garza ======== */
 
   void move_to_front(const QueueElement & el);
   /*-----------------------------------------------------------------------
@@ -134,8 +134,8 @@ class Queue
         passed as parameter will be emptied by the end of the call and all 
         of its elements will remain within the caller queue.
   -----------------------------------------------------------------------*/
-  
-  /* ======== End of Part A - by Eduardo Garza ======== */
+
+/* ======== End of Part A - by Eduardo Garza ======== */
 
   private:
    /*** Node class ***/

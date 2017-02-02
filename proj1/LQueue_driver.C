@@ -3,15 +3,199 @@
   ----------------------------------------------------------------------*/
 
 #include <iostream>
+#include <cstdio> // standard i/o
+#include <cstdlib> // for atoi
+#include <unistd.h>
+
 #include "LQueue.h"
-using namespace std;
-  
+
+#define LAND_ID 2000 // corresponds to cR = 1
+#define TAKEOFF_ID 7000 // corresponds to cR = 2
+#define PLANE_ID 5000
+
+using namespace std;  
 
 void print(Queue q)
-{ q.display(cout); }
+{ 
+  q.display(cout);
+}
+
+void runwaySimulator() {
+  // generate different random variables
+  srand(time(NULL));
+
+  // Input Variables with DEFAULT values
+  int land_time = 3, takeoff_time = 4, land_rate = 11, takeoff_rate = 10;
+  int sim_time = 120;
+
+/*
+  // User Input Parameters
+  cout << "Enter: " << endl;
+  // IO #1
+  cout << "\tRequired Time to Land (in minutes): ";
+  cin >> land_time;
+  // IO #2
+  cout << "\tRequired Time to Take-Off (in minutes): ";
+  cin >> takeoff_time;
+  // IO #3
+  cout << "\tLanding Rate (planes per hour): ";
+  cin >> land_rate;
+  // IO #4
+  cout << "\tTakeoff Rate (planes per hour): ";
+  cin >> takeoff_rate;
+  // IO #5 
+  cout << "\tMinutes to Simulate: ";
+  cin >> sim_time;
+  cout << endl;
+*/
+
+  // Queues for our system
+  Queue takeoffQ, landQ, runwayQ;
+  int runway_ID;
+
+  // Random Numbers
+  int num_1, num_2;
+  int time = 0; 
+
+  // Statistics Variables
+  int all_takeoff = 0, all_land = 0;
+  int current_takeoff = 0, current_land = 0;
+  int max_takeoff = 0, max_land = 0;
+  int time_takeoff  = 0, time_land = 0;
+
+
+/* == Main Simulator Loop == */
+  do {
+    cout << "Time: " << time << endl;
+
+    // Generate 2 random numbers
+    num_1 = rand() % 60;
+    num_2 = rand() % 60;
+  
+    // Landing Request
+    if(num_1 < land_rate) {
+      int id_land = time + LAND_ID;
+      landQ.enqueue(id_land);
+
+      all_land++;
+      current_land++;
+      if(current_land > max_land) max_land = current_land;
+
+      cout << "\tPlane " << id_land << " wants to land." << endl;
+      cout << "\tPlane " << id_land << " was added to the landing queue." << endl;
+      cout << "\tNumber of Planes in Land Queue: " << current_land << ".\n" << endl;
+    }
+
+    // Takeoff Request
+    if(num_2 < takeoff_rate) { 
+      int id_takeoff = time + TAKEOFF_ID;
+      takeoffQ.enqueue(id_takeoff);
+
+      all_takeoff++;
+      current_takeoff++;
+      if(current_takeoff > max_takeoff) max_takeoff = current_takeoff;
+
+      cout << "\tPlane " << id_takeoff << " wants to takeoff." << endl;
+      cout << "\tPlane " << id_takeoff << " was added to the takeoff queue." << endl;
+      cout << "\tNumber of Planes in Takeoff Queue: " << current_takeoff << ".\n" << endl;
+    }
+
+    // Check Runway (EMPTY)
+    if (runwayQ.empty()) 
+    { 
+      // Priority to landQ
+      if( !landQ.empty() ) {
+        // set the planeID and time tracker
+        int initL = landQ.front();
+        runway_ID = initL;
+
+        // remove from landQ and put into runway
+        landQ.dequeue();
+        runwayQ.enqueue(time);
+        current_land--;
+
+        cout << "\t**Plane " << runway_ID << " is occuping runway for landing." << endl;
+        cout << "\t**Plane " << runway_ID << " will land in approximately ";
+        cout << land_rate << " minutes." << endl;
+
+        // timesum(land) = t - t0 
+        time_land += ( time - initL + LAND_ID  );
+
+        // cout << "\t"
+
+      // LandQ empty : TakeoffQ NOT-EMPTY
+      } else if ( !takeoffQ.empty() ) 
+      {
+        int initT = takeoffQ.front();
+        runway_ID = initT;
+
+        takeoffQ.dequeue();
+        runwayQ.enqueue(time);
+        current_takeoff--;
+
+        cout << "\t**Plane " << runway_ID << " is occuping runway for landing." << endl;
+        cout << "\t**Plane " << runway_ID << " will land in approximately ";
+        cout << takeoff_rate << " minutes." << endl;
+
+
+        // timesum(land) = t - t0 
+        time_takeoff += ( time - initT + TAKEOFF_ID );
+
+      // both Queues are EMPTY
+      } else { /* do nothing */ }
+
+
+    // Check Runway (NOT-EMPTY)
+    } else 
+    { 
+      int timeInit = runwayQ.front();
+      
+      // when time to land
+      if( time - timeInit == land_time) {
+        cout << "\tLanding complete" << endl;
+        cout << "\tLanded: Plane " << runway_ID << endl; 
+        runwayQ.dequeue();
+      }
+
+      if( time - timeInit == takeoff_time ) {
+        cout << "tTakeoff complete" << endl;
+        cout << "\tIn Flight: Plane " << runway_ID << endl; 
+        runwayQ.dequeue();
+      }
+
+    }
+
+    // Sleeps for 1 second
+    usleep(1000000);
+  } while(time++ < sim_time);
+/* == End of Main Loop Simulator == */
+
+
+
+
+/* == Print Statistics == */
+
+  cout << "STATISTICS\n" << endl;
+
+  cout << "Maximum number of planes in landing queue was: "
+        << ( max_land ) << endl;
+
+  cout << "Average minutes spent waiting to land: "
+        << ( time_land / all_land ) << endl;
+
+  cout << "Maximum number of planes in takeoff queue was: "
+        << ( max_takeoff ) << endl;
+
+  cout << "Average minutes spent waiting to takeoff: "
+        << ( time_takeoff / all_takeoff ) << endl;
+
+ } 
+
+
 
 int main(void)
 {
+/*
    Queue q1;
    cout << "Queue created.  Empty? " << boolalpha << q1.empty() << endl;
 
@@ -34,8 +218,10 @@ int main(void)
    cout << "Queue q2 empty? " << q2.empty() << endl;
 
    cout << "Front value in q2: " << q2.front() << endl;
+*/
 
 /* ====== Eduardo Testing Part A ======== */
+/*
   cout << "\nMoving elements" << endl;
    q1.move_to_front(300);
    q1.move_to_front(300);
@@ -59,9 +245,11 @@ int main(void)
    q2.merge_two_queues(q3);
    print(q2);
    cout << endl;
+*/
 
 /* ====== End of Eduardo Testing Part A ======== */
 
+/*
    while (!q2.empty())
    {
      cout << "Remove front -- Queue contents: ";
@@ -72,6 +260,14 @@ int main(void)
    cout << "Front value in q2?" << endl << q2.front() << endl;
    cout << "Trying to remove front of q2: " << endl;
    q2.dequeue();
+*/
+
+/* ====== Eduardo Testing Part B ======== */
+
+   runwaySimulator();
+
+/* ====== End of Eduardo Testing Part B ======== */
+
    //system("PAUSE");
    return 0;
 }

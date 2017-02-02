@@ -128,30 +128,29 @@ void Queue::dequeue()
       cerr << "*** Queue is empty -- can't remove a value ***\n";
 }
 
-
-//--- Search through a queue for a particular key value
-//--- If found, move node to front
-/* Edited by Eduardo : 5:56 PM Feb 1, 2017 */
-void Queue::move_to_front(Queue & q1, const QueueElement & el) 
+//--- Definition of move_to_front()
+/* Completed by Eduardo : 10:01 AM Feb 2, 2017 */
+void Queue::move_to_front(const QueueElement & el) 
 {
-	// return when empty, or only one node
-	if(q1.empty() || (q1.myFront && q1.myFront == q1.myBack)) return; 
+	// when EMPTY or f = b (1 node), return
+	if(empty() || (myFront && myFront == myBack)) return; 
 
 	// declare 2 traversal nodes
-	Queue::NodePointer it = q1.myFront;
-	Queue::NodePointer prev = q1.myFront;
+	Queue::NodePointer it = myFront;
+	Queue::NodePointer prev = myFront;
 
-	// iterate until key is found
 	while(it) {
+    // if 'el' is found, key is at 'it'
 		if(it->data == el) break;
 
+    //iterate
 		prev = it;
 		it = it->next;
 	}
 
-	// key is found in 1 node only
+	// if 'el', & ONLY 1 node in Q
 	if(it == prev && it->data == el) {
-		// first node : do nothing
+		// no switch : do nothing
 		return;
 
 	// key is found at last node
@@ -159,18 +158,20 @@ void Queue::move_to_front(Queue & q1, const QueueElement & el)
 		// prev points to NULL (bc last el)
 		prev->next = 0;
 
-		// point key to front
-		it->next = q1.myFront;
-		q1.myFront = it;
+		// move Node to front
+		it->next = myFront;
+		myFront = it;
 		return;
 	
 	// key is found at x (non-front/back node)
 	} else if(it->data == el) {
 		prev->next = it->next;
 
-		it->next = q1.myFront;
-		q1.myFront = it;
+		it->next = myFront;
+		myFront = it;
 		return;
+
+    // else corresponds to not finding'el'
 	} else {}
 
 }
@@ -178,62 +179,67 @@ void Queue::move_to_front(Queue & q1, const QueueElement & el)
 //--- Takes q1 and q2 as two Queues and merges them
 //--- into a single queue with absolute order kept
 /* Edited by Eduardo : 7:33 PM Feb 1, 2017 */
-/*void Queue::merge_two_queues(const Queue & q2) {
-	if(q2.empty()) return * this;
+void Queue::merge_two_queues(Queue & q2) {
+	// Q2 EMPTY
+  if(q2.empty()) return;
 
-	// point the back of q1 to beg of q2
-	myBack->next = q2.myFront;
+  // Q1 EMPTY, copy all Q2
+  if(empty()) {
+    *this = q2;
+    // calls ~Queue()
+    while(!q2.empty())
+      q2.dequeue();
+    return;
+  }
 
-	// set q2 to null to signify that it is empty
-	q2.myFront = q2.myBack = 0;
+  // Q1, Q2 NON-EMPTY below
+  Queue::NodePointer it = myFront;
+  Queue::NodePointer prev = myFront;
 
-	// now SORT the queue
-	NodePointer index = myFront; 
-	NodePointer jindex = myFront;
-	NodePointer least = myFront;
+  while(it && !q2.empty()) {
+    // delete node from q2 in all cases
+    int new_data = q2.front(); 
+    q2.dequeue();
 
-	while(index) {
-		least = index;
+    // when Q2 is smaller that 'it'
+    if(it->data > new_data) {
+      // first node
+      if(it == prev) {
+        Queue::NodePointer newptr = new Queue::Node(new_data);
+        newptr->next = it;
+        myFront = newptr;
+        it = myFront;
+        prev = it;
 
-		while(jindex) {
-			if(least->data > jindex->data)
-				least = jindex;
-			prev = jindex;
-			jindex = jindex->next;
-		}
+      // it MULTIPLE nodes
+      } else {
+        // declare new Node manually & insert between 'prev'-'it'
+        Queue::NodePointer newptr = new Queue::Node(new_data);
+        prev->next = newptr;
+        newptr->next = it;
+      }           
 
-	// switch if least != index 
-		// case: switch first & last node
-		if(least != index && least == myBack && index == myFront) {
-			// where last is at least
-			least->next = myFront;
+    // when the value was greater than
+    } else {
+      // declare a new Node and put it after 'it'
+      Queue::NodePointer newptr = new Queue::Node(new_data);
+      newptr->next = it->next;
+      it->next = newptr;
 
+      // iterate
+      prev = it;
+      it = it->next;
 
-		// case: switch first and non-last nodes
-		} else if () {
+    }
+  }
 
+  // when 'it' is done iterating
+  if(prev->next == it && !q2.empty()) {
+    // add all remaining els to end of Q1
+    while(!q2.empty()) {
+      enqueue(q2.front());
+      q2.dequeue();
+    }
+  }
 
-
-		// case: switch non-first and last nodes
-		} else if () {
-
-
-
-		// case: switch non-first and non-last nodes
-		} else if() {
-
-
-		} else {  }
-
-
-
-		// iterate after switch
-		prev = index;
-		index = index->next;
-	}
-
-	return this*; 
-	return NULL;
-} */
-
-
+} 

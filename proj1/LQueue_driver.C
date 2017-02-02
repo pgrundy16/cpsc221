@@ -36,11 +36,31 @@ int main(void)
    cout << "Front value in q2: " << q2.front() << endl;
 
 /* ====== Eduardo Testing Part A ======== */
-   cout << "Moving elements" << endl;
-   Queue::move_to_front(q1, 300);
+  cout << "\nMoving elements" << endl;
+   q1.move_to_front(300);
+   q1.move_to_front(300);
+   q1.move_to_front(500);
+   print(q1);
+   cout << endl;
+
+   cout << "\nMerging Queues" << endl;
+   int index = 1;
+     Queue q3;  
+   while(index < 10) {
+    q3.enqueue(-1 * index);
+    index++;
+  }
+   cout << "Queue 2: ";
    print(q2);
+   cout << "Queue 3: ";
+   print(q3);
+   cout << endl;
 
+   q2.merge_two_queues(q3);
+   print(q2);
+   cout << endl;
 
+/* ====== End of Eduardo Testing Part A ======== */
 
    while (!q2.empty())
    {

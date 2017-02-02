@@ -1,15 +1,15 @@
 
 /*-- LQueue.h -------------------------------------------------------------
 
-  This header file defines a Queue data type.
-  Basic operations:
-    constructor:  Constructs an empty queue
-    empty:        Checks if a queue is empty
-    enqueue:      Modifies a queue by adding a value at the back
-    front:        Accesses the top queue value; leaves queue unchanged
-    dequeue:      Modifies queue by removing the value at the front
-    display:      Displays all the queue elements
-    Note: Execution terminates if memory isn't available for a queue element.
+This header file defines a Queue data type.
+Basic operations:
+  constructor:  Constructs an empty queue
+  empty:        Checks if a queue is empty
+  enqueue:      Modifies a queue by adding a value at the back
+  front:        Accesses the top queue value; leaves queue unchanged
+  dequeue:      Modifies queue by removing the value at the front
+  display:      Displays all the queue elements
+  Note: Execution terminates if memory isn't available for a queue element.
 ---------------------------------------------------------------------------*/
 
 #include <iostream>
@@ -22,7 +22,7 @@ typedef int QueueElement;
 
 class Queue
 {
- public:
+  public:
   /***** Function Members *****/
 
   /***** Constructors *****/
@@ -108,10 +108,36 @@ class Queue
         queue is empty; in that case, an error message is displayed 
         and execution allowed to proceed.
   -----------------------------------------------------------------------*/
-  static void move_to_front(Queue & q1, const QueueElement & el);
-  // void merge_two_queues(const Queue & q2);
 
- private:
+  /* ======== Part A - by Eduardo Garza ======== */
+
+  void move_to_front(const QueueElement & el);
+  /*-----------------------------------------------------------------------
+    Given an element key, if found within a Queue, move it to the front
+      of the queue.
+
+    Precondition:  QueueElement is an integer (non-overflow) value
+    Postcondition: Value 'el' has been shifted to the front if found
+        within the queue at a non-front position. If the Queue is empty
+        or the element is not found, the queue simply returns without
+        computing additional operations.
+  -----------------------------------------------------------------------*/
+
+  void merge_two_queues(Queue & q2);
+  /*-----------------------------------------------------------------------
+    A queue calls a second queue to merge the two queues together. 
+
+    Precondition:  Queue(#1), making the call, AND, queue(#2), parameter,
+        MUST both be sorted prior to this call.
+    Postcondition: The caller queue will merge the parameter queue into
+        its own queue and maintain absolute order (in ascending). The queue
+        passed as parameter will be emptied by the end of the call and all 
+        of its elements will remain within the caller queue.
+  -----------------------------------------------------------------------*/
+  
+  /* ======== End of Part A - by Eduardo Garza ======== */
+
+  private:
    /*** Node class ***/
    class Node
    {

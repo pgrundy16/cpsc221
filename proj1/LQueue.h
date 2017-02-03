@@ -137,6 +137,9 @@ class Queue
 
 /* ======== End of Part A - by Eduardo Garza ======== */
 
+  void printRows(int flag);
+  void randomCity();
+
   private:
    /*** Node class ***/
    class Node
@@ -144,6 +147,7 @@ class Queue
     public:
       QueueElement data;
       Node * next;
+      string dest;
       //--- Node constructor
       Node(QueueElement value, Node * link = 0)
       /*-------------------------------------------------------------------
@@ -151,7 +155,7 @@ class Queue
         Postcondition: A Node has been constructed with value in its 
              data part and its next part set to link (default 0).
        ------------------------------------------------------------------*/
-      { data = value; next = link; }
+      { data = value; next = link;}
 
   };
 

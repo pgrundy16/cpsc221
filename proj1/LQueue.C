@@ -5,6 +5,15 @@
 -------------------------------------------------------------------------*/
  
 #include <iostream>
+#include <cstdio> // standard i/o
+#include <cstdlib> // for atoi
+#include <unistd.h>
+#include <iomanip>
+#include <ctime>
+#include <vector>
+#include <string>
+#include <fstream>
+
 using namespace std;
 
 #include "LQueue.h"
@@ -102,6 +111,59 @@ void Queue::display(ostream & out) const
    out << endl;
 }
 
+void Queue::printRows(int flag) {
+  // Iterator
+  Queue::NodePointer ptr;
+
+  srand(time(NULL));
+
+  // open file  
+  ifstream file1("cities.txt");
+  std::string line;
+  std::vector<std::string> citiesVec;
+
+  while (getline(file1, line))
+    citiesVec.push_back(line);
+
+  file1.close();
+
+
+  for (ptr = myFront; ptr != 0; ptr = ptr->next) 
+  {
+    // Print Flight ID
+    cout << "| ";
+    cout << "FX" << setw(6) << setfill(' ') << ptr->data << "\t";
+    
+    if(flag == 1)
+      cout << "| Arriving\t";
+    else if (flag == 2)
+      cout << "| Departing\t";
+    else
+      cout << "| Runway\t";
+
+  // Generate a destination
+    int r1 = rand() % 93;
+    if((ptr->dest).empty()) 
+      ptr->dest = citiesVec.at(r1);
+    
+    if((ptr->dest).length() > 13)
+      cout << "| " << ptr->dest  << "\t";
+    else if((ptr->dest).length() < 6)
+      cout << "| " << ptr->dest  << "\t\t\t";
+    else
+      cout << "| " << ptr->dest  << "\t\t"; 
+  // END of Generate-Destination
+
+  // Generate random gate
+    cout <<  "| " << (char)('A' + rand() % 5);
+    cout << (int)(2 + rand() % 40);
+    cout << "\t\t|" << endl;
+
+  }
+
+
+}
+
 //--- Definition of front()
 QueueElement Queue::front() const
 {
@@ -124,8 +186,9 @@ void Queue::dequeue()
       if (myFront == 0)     // queue is now empty
          myBack = 0;
    }   
-   else
-      cerr << "*** Queue is empty -- can't remove a value ***\n";
+   else {}
+      // cerr << "*** Queue is empty -- can't remove a value ***\n";
+   
 }
 
 //--- Definition of move_to_front()

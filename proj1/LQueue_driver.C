@@ -1,24 +1,94 @@
 /*---------------------------------------------------------------------
                   Driver program to test the Queue class.
   ----------------------------------------------------------------------*/
-
+// Libraries 
 #include <iostream>
-#include <cstdio> // standard i/o
-#include <cstdlib> // for atoi
+#include <cstdio> 
+#include <cstdlib>
 #include <unistd.h>
+#include <iomanip>
+#include <ctime>
+#include <fstream>
 
+// Files included
 #include "LQueue.h"
+#include "CDate.h"
 
-#define LAND_ID 2000 // corresponds to cR = 1
-#define TAKEOFF_ID 7000 // corresponds to cR = 2
+#define LAND_ID 2000 
+#define TAKEOFF_ID 7000 
 #define PLANE_ID 5000
 
 using namespace std;  
 
-void print(Queue q)
-{ 
-  q.display(cout);
+// Our Queues are GLOBAL
+Queue takeoffQ, landQ, runwayQ;
+
+void print(Queue q) { q.display(cout);}
+
+void printDivider() 
+{
+    cout << "+---------------+---------------+"
+          <<"-----------------------+---------------+" << endl;
 }
+
+void printTabs(int num) { for (int i =0; i < num; i++) cout << "\t"; }
+
+void printEL() 
+{
+  cout << "|";
+  printTabs(9);
+  cout << "|" << endl;
+}
+
+void printHeader() 
+{
+  // Print top
+  cout << "+-----------------------------------"
+  << "------------------------------------+" << endl; 
+  // print empty line
+  printEL();
+  // print title
+  cout << "|";
+  printTabs(3);
+  cout <<"ARRIVALS & DEPARTURES";
+  printTabs(4);
+  cout << "|" << endl;
+  // print empty line
+  printEL();
+  // opening-bottom divider
+  printDivider();
+}
+
+void printTable() {
+  if(!takeoffQ.empty() || !landQ.empty() || !runwayQ.empty()) {
+
+    // Print table title
+    printHeader();
+
+    // print table header
+    cout << "| Flight\t| Direction\t| Destination\t\t| Gate\t\t|" << endl;
+    printDivider();
+    
+    if(!runwayQ.empty()) {
+      // print section Runway
+      runwayQ.printRows(3);
+      printDivider();
+    }
+
+    if(!landQ.empty()) {
+      // print section Landing
+      landQ.printRows(1);
+      printDivider();
+    }
+
+    if(!takeoffQ.empty()) {
+      // print section Takeoff
+      takeoffQ.printRows(2);
+      printDivider();
+    }
+  }
+}
+
 
 void runwaySimulator() {
   // generate different random variables
@@ -28,7 +98,7 @@ void runwaySimulator() {
   int land_time = 3, takeoff_time = 4, land_rate = 11, takeoff_rate = 10;
   int sim_time = 120;
 
-/*
+
   // User Input Parameters
   cout << "Enter: " << endl;
   // IO #1
@@ -47,15 +117,16 @@ void runwaySimulator() {
   cout << "\tMinutes to Simulate: ";
   cin >> sim_time;
   cout << endl;
-*/
 
-  // Queues for our system
-  Queue takeoffQ, landQ, runwayQ;
+  // plane ID on runway
   int runway_ID;
 
   // Random Numbers
   int num_1, num_2;
-  int time = 0; 
+
+  // Time Variables
+  CDate d1;
+  int time = 1; // tracker
 
   // Statistics Variables
   int all_takeoff = 0, all_land = 0;
@@ -66,7 +137,11 @@ void runwaySimulator() {
 
 /* == Main Simulator Loop == */
   do {
-    cout << "Time: " << time << endl;
+    // print out current TIME
+    d1.increment();
+
+    // Print the table
+    printTable();
 
     // Generate 2 random numbers
     num_1 = rand() % 60;
@@ -81,9 +156,10 @@ void runwaySimulator() {
       current_land++;
       if(current_land > max_land) max_land = current_land;
 
-      cout << "\tPlane " << id_land << " wants to land." << endl;
-      cout << "\tPlane " << id_land << " was added to the landing queue." << endl;
-      cout << "\tNumber of Planes in Land Queue: " << current_land << ".\n" << endl;
+      cout << "[REQUEST]: " << endl;
+      cout << "\tPlane " << id_land << " wants to land.";
+      cout << " Added to the landing queue." << endl;
+      cout << "\tNumber of Planes in Land Queue: " << current_land << "." << endl;
     }
 
     // Takeoff Request
@@ -94,10 +170,11 @@ void runwaySimulator() {
       all_takeoff++;
       current_takeoff++;
       if(current_takeoff > max_takeoff) max_takeoff = current_takeoff;
-
-      cout << "\tPlane " << id_takeoff << " wants to takeoff." << endl;
-      cout << "\tPlane " << id_takeoff << " was added to the takeoff queue." << endl;
-      cout << "\tNumber of Planes in Takeoff Queue: " << current_takeoff << ".\n" << endl;
+      
+      cout << "[REQUEST]: " << endl;
+      cout << "\tPlane " << id_takeoff << " wants to takeoff.";
+      cout << "Added to the takeoff queue." << endl;
+      cout << "\tNumber of Planes in Takeoff Queue: " << current_takeoff << "." << endl;
     }
 
     // Check Runway (EMPTY)
@@ -114,8 +191,9 @@ void runwaySimulator() {
         runwayQ.enqueue(time);
         current_land--;
 
-        cout << "\t**Plane " << runway_ID << " is occuping runway for landing." << endl;
-        cout << "\t**Plane " << runway_ID << " will land in approximately ";
+        cout << "[RUNWAY UPDATE]" << endl;
+        cout << "\tPlane " << runway_ID << " is occuping runway for landing." << endl;
+        cout << "\tPlane " << runway_ID << " will land in approximately ";
         cout << land_rate << " minutes." << endl;
 
         // timesum(land) = t - t0 
@@ -158,7 +236,7 @@ void runwaySimulator() {
       }
 
       if( time - timeInit == takeoff_time ) {
-        cout << "tTakeoff complete" << endl;
+        cout << "\tTakeoff complete" << endl;
         cout << "\tIn Flight: Plane " << runway_ID << endl; 
         runwayQ.dequeue();
       }
@@ -167,6 +245,7 @@ void runwaySimulator() {
 
     // Sleeps for 1 second
     usleep(1000000);
+    cout << "\n\n";
   } while(time++ < sim_time);
 /* == End of Main Loop Simulator == */
 
@@ -175,19 +254,22 @@ void runwaySimulator() {
 
 /* == Print Statistics == */
 
+  double avg_land = (double) (time_land / all_land );
+  double avg_takeoff = (double) (time_takeoff / all_takeoff);
+
   cout << "STATISTICS\n" << endl;
 
   cout << "Maximum number of planes in landing queue was: "
         << ( max_land ) << endl;
 
   cout << "Average minutes spent waiting to land: "
-        << ( time_land / all_land ) << endl;
+        << avg_land << endl;
 
   cout << "Maximum number of planes in takeoff queue was: "
         << ( max_takeoff ) << endl;
 
   cout << "Average minutes spent waiting to takeoff: "
-        << ( time_takeoff / all_takeoff ) << endl;
+        << avg_takeoff << endl;
 
  } 
 
@@ -195,6 +277,7 @@ void runwaySimulator() {
 
 int main(void)
 {
+  srand(time(NULL));
 /*
    Queue q1;
    cout << "Queue created.  Empty? " << boolalpha << q1.empty() << endl;
@@ -247,6 +330,7 @@ int main(void)
    cout << endl;
 */
 
+
 /* ====== End of Eduardo Testing Part A ======== */
 
 /*
@@ -260,12 +344,18 @@ int main(void)
    cout << "Front value in q2?" << endl << q2.front() << endl;
    cout << "Trying to remove front of q2: " << endl;
    q2.dequeue();
+
 */
 
 /* ====== Eduardo Testing Part B ======== */
 
    runwaySimulator();
+  // printTable();
 
+  // CDate d1;
+  // d1.printDate();
+
+    
 /* ====== End of Eduardo Testing Part B ======== */
 
    //system("PAUSE");

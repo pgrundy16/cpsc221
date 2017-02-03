@@ -16,11 +16,16 @@ all: LQueue_driver
 # compile the LQueue library
 LQueue.o: LQueue.C LQueue.h
 
+#compile the dates file
+CDate.o: CDate.cc CDate.h
+
 # compile the test driver
-LQueue_driver: LQueue_driver.o LQueue.o
+LQueue_driver: LQueue_driver.o LQueue.o CDate.o 
 
 # compile the runway (runway.C has to exist)
 runway: runway.o LQueue.o
+runway: runway.o CDate.o
+
 
 clean:
 	rm -f *.o LQueue_driver runway

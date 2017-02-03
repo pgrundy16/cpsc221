@@ -171,4 +171,5 @@ void CDate::incrementDate() {
 void CDate::increment() {
 	incrementMinutes();
 	printTime();
+	printDate();
 }

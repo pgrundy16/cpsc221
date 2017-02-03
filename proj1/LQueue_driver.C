@@ -20,11 +20,13 @@
 
 using namespace std;  
 
-// Our Queues are GLOBAL
+// Our Queues are GLOBAL for easier accessibility
 Queue takeoffQ, landQ, runwayQ;
 
+// prints the queue
 void print(Queue q) { q.display(cout);}
 
+// prints a section divider
 void printDivider() 
 {
     cout << "+---------------+---------------+"
@@ -33,6 +35,7 @@ void printDivider()
 
 void printTabs(int num) { for (int i =0; i < num; i++) cout << "\t"; }
 
+// prints an empty row
 void printEL() 
 {
   cout << "|";
@@ -40,6 +43,7 @@ void printEL()
   cout << "|" << endl;
 }
 
+// prints the table header
 void printHeader() 
 {
   // Print top
@@ -59,6 +63,7 @@ void printHeader()
   printDivider();
 }
 
+// prints the entire table using the helper functions listed above
 void printTable() {
   if(!takeoffQ.empty() || !landQ.empty() || !runwayQ.empty()) {
 
@@ -89,7 +94,18 @@ void printTable() {
   }
 }
 
-
+/* This is our main simulator for the runway.
+ * It does not take any input parameters but does require user input.
+ *
+ * Precondition: 
+ *    Program does not deal with sloppy user behavior as input-time
+ *     and requires the client to enter valid integers to get the 
+ *     simulation working.
+ * Postcondition:
+ *    The runway is simulated with console output, using a timer
+ *      and tables for user interface facility. It simulates until
+ *      the end time that the user requested.
+ */
 void runwaySimulator() {
   // generate different random variables
   srand(time(NULL));
@@ -250,8 +266,6 @@ void runwaySimulator() {
 /* == End of Main Loop Simulator == */
 
 
-
-
 /* == Print Statistics == */
 
   double avg_land = (double) (time_land / all_land );
@@ -278,7 +292,10 @@ void runwaySimulator() {
 int main(void)
 {
   srand(time(NULL));
-/*
+
+
+/* THIS CAME WITH THE FILE - TESTING FOR PART A
+
    Queue q1;
    cout << "Queue created.  Empty? " << boolalpha << q1.empty() << endl;
 
@@ -302,6 +319,7 @@ int main(void)
 
    cout << "Front value in q2: " << q2.front() << endl;
 */
+
 
 /* ====== Eduardo Testing Part A ======== */
 /*
@@ -333,7 +351,8 @@ int main(void)
 
 /* ====== End of Eduardo Testing Part A ======== */
 
-/*
+/* THIS CAME WITH THE FILE - TESTING FOR PART A
+
    while (!q2.empty())
    {
      cout << "Remove front -- Queue contents: ";
@@ -350,11 +369,6 @@ int main(void)
 /* ====== Eduardo Testing Part B ======== */
 
    runwaySimulator();
-  // printTable();
-
-  // CDate d1;
-  // d1.printDate();
-
     
 /* ====== End of Eduardo Testing Part B ======== */
 

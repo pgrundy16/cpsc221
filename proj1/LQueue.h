@@ -109,6 +109,7 @@ class Queue
         and execution allowed to proceed.
   -----------------------------------------------------------------------*/
 
+
 /* ======== Part A - by Eduardo Garza ======== */
 
   void move_to_front(const QueueElement & el);
@@ -137,8 +138,20 @@ class Queue
 
 /* ======== End of Part A - by Eduardo Garza ======== */
 
+
+/* ======== Part B - by Eduardo Garza ======== */
+
   void printRows(int flag);
-  void randomCity();
+  /*-----------------------------------------------------------------------
+  Prints the data inside the queue for our TABLE
+
+  Precondition:  The flag MUST be set to 1, 2 or 3 to indicate
+      if queue is runway, takeoff, or landing
+  Postcondition: Adds to the dynamic table and prints all the data below
+-----------------------------------------------------------------------*/
+
+/* ======== End of Part B - by Eduardo Garza ======== */
+
 
   private:
    /*** Node class ***/
@@ -147,7 +160,12 @@ class Queue
     public:
       QueueElement data;
       Node * next;
+      
+/* ======== Added a string-field for Nodes to remember their destination city  ======== */
       string dest;
+/* ==================================================================================== */
+
+
       //--- Node constructor
       Node(QueueElement value, Node * link = 0)
       /*-------------------------------------------------------------------

@@ -37,7 +37,7 @@ void CDate::printDate(void)
 	if(m_month == 11) disp_month = "November";
 	if(m_month == 12) disp_month = "December";
 
-	cout << disp_month << " " << m_day << ", " << m_year << endl; 
+	cout << disp_month << " " << m_day << ", " << m_year << " | "; 
 }
 
 void CDate::printTime(void) 
@@ -170,6 +170,6 @@ void CDate::incrementDate() {
 
 void CDate::increment() {
 	incrementMinutes();
-	printTime();
 	printDate();
+	printTime();
 }

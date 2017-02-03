@@ -73,6 +73,8 @@ class Queue
   -----------------------------------------------------------------------*/
 
   void enqueue(const QueueElement & value);
+  void enqueue(const QueueElement & value, string city);
+
   /*-----------------------------------------------------------------------
     Add a value to a queue.
 
@@ -99,7 +101,7 @@ class Queue
         "garbage value" is returned.
   -----------------------------------------------------------------------*/
 
-  void dequeue();
+  string dequeue();
   /*-----------------------------------------------------------------------
     Remove value at front of queue (if any).
 

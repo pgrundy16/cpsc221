@@ -102,6 +102,20 @@ void Queue::enqueue(const QueueElement & value)
    }
 }
 
+void Queue::enqueue(const QueueElement & value, string city)
+{
+   Queue::NodePointer newptr = new Queue::Node(value);
+   if (empty())
+      myFront = myBack = newptr;
+   else
+   {
+      myBack->next = newptr;
+      myBack = newptr;
+   }
+
+   newptr->dest = city;
+}
+
 //--- Definition of display()
 void Queue::display(ostream & out) const
 {
@@ -155,10 +169,13 @@ void Queue::printRows(int flag) {
   // END of Generate-Destination
 
   // Generate random gate
-    cout <<  "| " << (char)('A' + rand() % 5);
-    cout << (int)(2 + rand() % 40);
-    cout << "\t\t|" << endl;
-
+    if(flag == 3) {
+      cout <<  "| " << "R1";
+    } else {
+      cout <<  "| " << (char)('A' + rand() % 5);
+      cout << (int)(2 + rand() % 40);
+    }
+      cout << "\t\t|" << endl;
   }
 
 
@@ -176,11 +193,13 @@ QueueElement Queue::front() const
 }
 
 //--- Definition of dequeue()
-void Queue::dequeue()
+string Queue::dequeue()
 {
+  string city;
    if (!empty())
    {
       Queue::NodePointer ptr = myFront;
+      city = ptr->dest;
       myFront = myFront->next;
       delete ptr;
       if (myFront == 0)     // queue is now empty
@@ -189,6 +208,7 @@ void Queue::dequeue()
    else {}
       // cerr << "*** Queue is empty -- can't remove a value ***\n";
    
+   return city;
 }
 
 //--- Definition of move_to_front()

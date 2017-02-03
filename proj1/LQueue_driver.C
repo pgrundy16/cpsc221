@@ -114,7 +114,6 @@ void runwaySimulator() {
   int land_time = 3, takeoff_time = 4, land_rate = 11, takeoff_rate = 10;
   int sim_time = 120;
 
-
   // User Input Parameters
   cout << "Enter: " << endl;
   // IO #1
@@ -164,7 +163,7 @@ void runwaySimulator() {
     num_2 = rand() % 60;
   
     // Landing Request
-    if(num_1 < land_rate) {
+    if(num_1 < land_rate && time < sim_time) {
       int id_land = time + LAND_ID;
       landQ.enqueue(id_land);
 
@@ -173,13 +172,13 @@ void runwaySimulator() {
       if(current_land > max_land) max_land = current_land;
 
       cout << "[REQUEST]: " << endl;
-      cout << "\tPlane " << id_land << " wants to land.";
-      cout << " Added to the landing queue." << endl;
+      cout << "\tPlane " << id_land << " wants to land. ";
+      cout << "Added to the landing queue." << endl;
       cout << "\tNumber of Planes in Land Queue: " << current_land << "." << endl;
     }
 
     // Takeoff Request
-    if(num_2 < takeoff_rate) { 
+    if(num_2 < takeoff_rate && time < sim_time) { 
       int id_takeoff = time + TAKEOFF_ID;
       takeoffQ.enqueue(id_takeoff);
 
@@ -188,7 +187,7 @@ void runwaySimulator() {
       if(current_takeoff > max_takeoff) max_takeoff = current_takeoff;
       
       cout << "[REQUEST]: " << endl;
-      cout << "\tPlane " << id_takeoff << " wants to takeoff.";
+      cout << "\tPlane " << id_takeoff << " wants to takeoff. ";
       cout << "Added to the takeoff queue." << endl;
       cout << "\tNumber of Planes in Takeoff Queue: " << current_takeoff << "." << endl;
     }
@@ -203,8 +202,8 @@ void runwaySimulator() {
         runway_ID = initL;
 
         // remove from landQ and put into runway
-        landQ.dequeue();
-        runwayQ.enqueue(time);
+        string city = landQ.dequeue();
+        runwayQ.enqueue(time, city);
         current_land--;
 
         cout << "[RUNWAY UPDATE]" << endl;
@@ -223,8 +222,8 @@ void runwaySimulator() {
         int initT = takeoffQ.front();
         runway_ID = initT;
 
-        takeoffQ.dequeue();
-        runwayQ.enqueue(time);
+        string city = takeoffQ.dequeue();
+        runwayQ.enqueue(time, city);
         current_takeoff--;
 
         cout << "\t**Plane " << runway_ID << " is occuping runway for landing." << endl;
@@ -262,7 +261,7 @@ void runwaySimulator() {
     // Sleeps for 1 second
     usleep(1000000);
     cout << "\n\n";
-  } while(time++ < sim_time);
+  } while(time++ < sim_time || (!takeoffQ.empty() || !landQ.empty() || !runwayQ.empty()) );
 /* == End of Main Loop Simulator == */
 
 

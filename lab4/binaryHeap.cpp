@@ -51,7 +51,7 @@ void sort(int* heap, int size) {
 //      it is at depth d in the whole heap
 //POST: The first size elements of heap are printed as a tree
 /* Completed by Eduardo : 11:06 AM Feb 1, 2017 */
-/*void printHeap(int *heap, int size, int node=0, int d=0) {
+void printHeap(int *heap, int size, int node=0, int d=0) {
 	// when out of bounds
 	if(node > size - 1) return;
 
@@ -63,25 +63,25 @@ void sort(int* heap, int size) {
 	printHeap(heap, size, 2*node + 1, d+1); 
 	printHeap(heap, size, 2*node + 2, d+1); 
 }
-*/
+
 
 //PRE:  The capacity of the array pointed to by heap is at least size.
 //      node is the index of the root of the current sub-tree and
 //      it is at depth d in the whole heap
 //POST: The tree is printed in a 90 degree downward view
 /* Edited by Eduardo : 11:14 AM Feb 1, 2017 */
-void printHeap(int *heap, int size, int node=0, int d=0) {
-	// when out of bounds
-	if(node > size - 1) return;
+// void printHeap(int *heap, int size, int node=0, int d=0) {
+// 	// when out of bounds
+// 	if(node > size - 1) return;
 
 
-	printHeap(heap, size, 2*node + 2, d+1); 
-	// print for each node
-	for(int i =0; i < d; i++) 
-		cout << '\t';
-	cout << heap[node] << endl;
-	printHeap(heap, size, 2*node + 1, d+1); 
-}
+// 	printHeap(heap, size, 2*node + 2, d+1); 
+// 	// print for each node
+// 	for(int i =0; i < d; i++) 
+// 		cout << '\t';
+// 	cout << heap[node] << endl;
+// 	printHeap(heap, size, 2*node + 1, d+1); 
+// }
 
 
 //PRE:  heap points to an array representing a heap
@@ -93,7 +93,6 @@ void printHeap(int *heap, int size, int node=0, int d=0) {
 void remove(int* heap, int key, int & size) {
 	int index = 0;
 
-
 	for( ; index < size; index++) {
 		// if node found
 		if(key == heap[index]) {
@@ -101,12 +100,9 @@ void remove(int* heap, int key, int & size) {
 			for(int j = index; j < size-1; j++)
 				heap[j] = heap[j+1]; 
 		}
-
 	}
-
 	// re-order the array
 	heapify(heap,size);
-
 }
 
 //PRE:  heap1 and heap2 contain size1 and size2 elements respectively.
@@ -114,21 +110,20 @@ void remove(int* heap, int key, int & size) {
 //      the elements in heap1 and heap2 (including duplicates).
 int* mergeHeap(int* heap1, int* heap2, int size1, int size2) {
 
+	int i =0, size = (size1 + size2);
+	int *ret = new int[size];
 
+	for( ; i < size; i++) 
+	{
+		if(i < size1)
+			ret[i] = heap1[i];
+		if(i < size2)
+			ret[i + size1] = heap2[i + size1]; 
+	}
 
+	heapify(ret, size);
 
-
-
-
-
-
-
-
-
-
-
-
-    return NULL;
+    return ret;
 }
 
 int input1[] = {8,3,5,6,2,9,1,7,4,0};

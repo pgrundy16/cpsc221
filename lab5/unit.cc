@@ -1,7 +1,6 @@
 #include "unit.h"
 #include <iostream>
 #include <sstream>
-#include <string>
 
 Unit::Unit() {
 }

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <vector>
 #include <cstdlib>	// provides atoi()
 #include <iomanip>	// provides std::setw()
@@ -49,6 +50,18 @@ void deleteTree( Node*& root ) {
   }
 }
 
+// Created by Eduardo 
+// Helper Method for delete_node
+Node* max_value_node(Node* root){
+
+	Node* current = root;
+
+	while(current->right)
+		current = current->right;
+
+	return current;   
+}
+
 /**
  * Recursively find a node with key 'key'.
  */
@@ -80,53 +93,76 @@ Node* find_parent(Node* r, Node* node) {
  * Deletes a node containing 'key' in the tree rooted at 'root'.
  */
 bool delete_node(Node*& root, int key) {
-  // find target node to delete
-  Node* target = find(root, key);
-  if (!target) return false;
+	// find target node to delete
+	Node* target = find(root, key);
+	if (!target) return false;
 
-  // find parent of target
-  Node* parent = find_parent(root, target);
+	// find parent of target
+	Node* parent = find_parent(root, target);
 
-  // case 1: target is a leaf or has only a right child
-  if (target->left == NULL) {
-    // set parent's child pointer
-    if (parent != NULL) {
-      if ( parent->left == target )
-	parent->left = target->right;
-      else
-	parent->right = target->right;
-    } else
-      root = target->right;
-  }
+	// case 1: target is a leaf or has only a right child
+	if (target->left == NULL) {
+	    // set parent's child pointer
+		if (parent != NULL) {
+			if ( parent->left == target )
+				parent->left = target->right;
+			else
+				parent->right = target->right;
+	    } else
+	      root = target->right;
+	  }
 
-  // case 2: target has only left child
-  else if (target->right == NULL) {
-    // set parent's child pointer
-    if (parent != NULL) {
-      if ( parent->left == target )
-	parent->left = target->left;
-      else
-	parent->right = target->left;
-    } else
-      root = target->left;
-  }
+		// case 2: target has only left child
+	else if (target->right == NULL) {
+		// set parent's child pointer
+		if (parent != NULL) {
+			if ( parent->left == target )
+				parent->left = target->left;
+		  	else
+				parent->right = target->left;
+		} else
+			root = target->left;
+	}
 
-  // case 3: target has two children
-  else {
-    /**
-     * THIS SECTION NEEDS TO BE IMPLEMENTED ********************
-     *
-     * Add the missing lines here to make the function complete. (Hint: To
-     * remain a valid binary tree, you must replace 'target' with either
-     * its predecessor or its successor. To make the lab more easy to test,
-     * PLEASE USE THE PREDECESSOR.)
-     */
-     return false; // comment out this line
-  }
+	  // case 3: target has two children
+	  // Edited by Eduardo
+	else {
+	/**
+	 * THIS SECTION NEEDS TO BE IMPLEMENTED ********************
+	 *
+	 * Add the missing lines here to make the function complete. (Hint: To
+	 * remain a valid binary tree, you must replace 'target' with either
+	 * its predecessor or its successor. To make the lab more easy to test,
+	 * PLEASE USE THE PREDECESSOR.)
+	 */
 
-  // free target
-  delete target;
-  return true;
+		Node* pred = max_value_node(target->left);
+		Node* pred_parent = find_parent(root, pred);
+
+		if (parent) 
+		{
+		 	if(parent->left == target )
+		 	{
+		 	   parent->left = pred;			
+		 	} else parent->right = pred;
+		} else 
+			root = pred;
+		 
+		if(pred_parent->right == pred)
+		{
+			pred_parent->right = pred->left;
+			pred->right = target->right;
+			pred->left = target->left;
+		} else 
+		{
+			pred_parent->left = pred->left;
+			pred->right = target->right;
+			pred->left = target->left;
+		}
+	}
+	// free target
+	delete target;
+	return true;
 }
 
 /**
@@ -157,76 +193,95 @@ void printTree( Node * r, int d = 0 ) {
 
 /**
  * Returns the number of nodes in the tree rooted at root.
+ * Edited by Eduardo
  */
 int numNodes( Node* root ) {
-  /**
-   * THIS FUNCTION NEEDS TO BE IMPLEMENTED ********************
-   */
-  return 0; // comment out this line
-
+	if(root) 
+		return numNodes(root->left) + numNodes(root->right) + 1;
+	else return 0;
 }
 
 /**
  * Returns the number of leaves in the tree rooted at root.
+ * Edited by Eduardo
  */
 int numLeaves( Node* root ) {
-  /**
-   * THIS FUNCTION NEEDS TO BE IMPLEMENTED ********************
-   */
-  return 0; // comment out this line
-
+	if(!root) 
+		return 0;
+	else if(!(root->left) && !(root->right)) 
+		return 1;
+	else 
+		return numLeaves(root->left) + numLeaves(root->right);
 }
 
 /**
  * Returns the height of node x.
+ * Edited by Eduardo
  */
 int height( Node* x ) {
-  /**
-   * THIS FUNCTION NEEDS TO BE IMPLEMENTED ********************
-   */
-  return 0; // comment out this line
+	if(!x) return -1;
 
+	if (!(x->left) && !(x->right)) return 0;
+	else {
+		int hL = height(x->left) + 1;
+		int hR = height(x->right) + 1;
+
+		if (hL > hR) return hL;
+		else return hR;
+	}
+
+	return 0;
 }
 
 /**
  * Returns the depth of node x in the tree rooted at root.
+ * Edited by Eduardo
  */
 int depth( Node* root, Node* x ) {
-  /**
-   * THIS FUNCTION NEEDS TO BE IMPLEMENTED ********************
-   */
-  return 0; // comment out this line
+	if(x == root) return 0;
 
+	if( (x->key) > (root->key)) 
+		return 1 + depth(x, root->right);
+	else if( (x->key) < (root->key) )
+		return 1 + depth(x, root->left);
+	else 
+		return 0;
 }
 
 /**
  * Traverse a tree rooted at rootNode in-order and use 'v' to visit each node.
+ * Edited by Eduardo
  */
 void in_order( Node* rootNode, int level, Visitor& v ) {
-  /**
-   * THIS FUNCTION NEEDS TO BE IMPLEMENTED ********************
-   */
+	if(!rootNode) return;
 
+	in_order(rootNode->left, level + 1, v);
+	v.visit(rootNode, level);
+	in_order(rootNode->right, level + 1, v);
 }
 
 /**
  * Traverse a tree rooted at rootNode pre-order and use 'v' to visit each node.
+ * Edited by Eduardo
  */
 void pre_order( Node* rootNode, int level, Visitor& v ) {
-  /**
-   * THIS FUNCTION NEEDS TO BE IMPLEMENTED ********************
-   */
+	if(!rootNode) return;
 
+	v.visit(rootNode, level);
+	pre_order(rootNode->left, level + 1, v);
+	pre_order(rootNode->right, level + 1, v);
 }
 
 /**
  * Traverse a tree rooted at rootNode post-order and use 'v' to visit each node.
+ * Edited by Eduardo
  */
 void post_order( Node* rootNode, int level, Visitor& v ) {
-  /**
-   * THIS FUNCTION NEEDS TO BE IMPLEMENTED ********************
-   */
+	if(!rootNode) return;
 
+	post_order(rootNode->left, level + 1, v);
+	post_order(rootNode->right, level + 1, v);
+	v.visit(rootNode, level);
 }
 
 
@@ -334,7 +389,7 @@ void runTests(Node*& tree, std::vector<int> keys) {
 
   //Delete a leaf
   unit.assertNonNull("Finding 9 (a leaf)", find(tree, 9));
-  delete_node(tree, 9);
+  // delete_node(tree, 9);
   unit.assertNull("Deleting 9 (a leaf)", find(tree, 9));
   unit.assertEquals("Number of nodes", 8, numNodes(tree));
   unit.assertEquals("Number of leaves", 3, numLeaves(tree));
@@ -342,7 +397,7 @@ void runTests(Node*& tree, std::vector<int> keys) {
 
   //Delete a node with one child
   unit.assertNonNull("Finding 2 (a node with one child)", find(tree, 2));
-  delete_node(tree, 2);
+  // delete_node(tree, 2);
   unit.assertNull("Deleting 2 (a node with one child)", find(tree, 2));
   unit.assertEquals("Number of nodes", 7, numNodes(tree));
   unit.assertEquals("Number of leaves", 3, numLeaves(tree));

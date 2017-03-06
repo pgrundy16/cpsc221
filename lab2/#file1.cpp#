@@ -1,0 +1,15 @@
+function Interleave(ls1, ls2) {
+  Node* false = new Node();
+  Node* prev = fake;
+  
+  while(ls1 || ls2) {
+    if(ls1) {
+      // code goes here
+    }
+    if(ls2) {
+      // code goes here
+    }
+  }
+
+  return fake->next;
+}

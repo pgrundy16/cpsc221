@@ -48,19 +48,19 @@ iii. Part C was to implement a creative touch to the simulation.
 
 Time: 09:05 PM
 +-----------------------------------------------------------------------+
-|									|
-|			ARRIVALS & DEPARTURES				|
-|									|
+|																		|
+|						ARRIVALS & DEPARTURES							|
+|																		|
 +---------------+---------------+-----------------------+---------------+
-| Flight	| Direction	| Destination		| Gate		|
+| Flight		| Direction		| Destination			| Gate			|
 +---------------+---------------+-----------------------+---------------+
-| FX     1	| Runway	| Louisville		| A3		|
+| FX     1		| Runway		| Louisville			| A3			|
 +---------------+---------------+-----------------------+---------------+
-| FX  2002	| Arriving	| Calgary		| A3		|
-| FX  2005	| Arriving	| Dallas		| B8		|
+| FX  2002		| Arriving		| Calgary				| A3			|
+| FX  2005		| Arriving		| Dallas				| B8			|
 +---------------+---------------+-----------------------+---------------+
-| FX  7004	| Departing	| Quebec City		| A3		|
-| FX  7005	| Departing	| Dallas		| B8		|
+| FX  7004		| Departing		| Quebec City			| A3			|
+| FX  7005		| Departing		| Dallas				| B8			|
 +---------------+---------------+-----------------------+---------------+
 	
 	This table includes real-time counter, using 9:00 PM as t0 since

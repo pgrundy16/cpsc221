@@ -1,0 +1,78 @@
+#include <iostream>
+#include <cstdio> // standard i/o
+#include <cstdlib> // for atoi
+#include <ctime>
+
+using namespace std;
+
+
+void playGuessGame(void){
+
+  cout << "\n\n\nWelcome to the Guessing Game!" << endl
+       << "*** Objective: To guess a number between 1 and 100 that will be checked "
+       << "against the number that will randomly be generated.\n" << endl;
+
+  cout << "Press the key 'p' to play or 'q' at any point to exit the game." << endl;
+  cout << "*** Good Luck! *** " << endl;
+
+  // take the first char to be p or q to begin game else, loop until so below
+  char key;
+  cin >> key;
+
+  // to begin game, press valid key
+  do {
+    if(key == 'p') break;
+    if(key == 'q') return;
+    
+    cin >> key;
+  } while(key != 'q' || key != 'p');
+
+  // this number represents the input guess from the user
+  int guess; 
+
+  // the random number generated : set a rand number every time we run prog.
+  srand(time(NULL));
+
+  do {
+    cout << "***********************************************************" << endl;
+    cout << "\nEnter Guess (1 to 100): \n" << endl;
+
+    cin >> guess;
+    int rNumGenerated = (rand() % 100) + 1;
+
+    if(cin.fail()) {
+      cout << "\nThe input was not a valid number.\n" << endl;
+      cin.clear();
+      cin.ignore();
+
+    } else if(guess == rNumGenerated) {
+      cout << "\nCongratulations! You guessed the number correctly!" << endl;
+
+    } else if( guess < 1 || guess > 100) {
+      cout << "\nYou did not enter a valid guess." << endl;
+      cout << "Remember to please enter a number between 1 and 100." << endl;
+
+    } else {
+      cout << "\nSorry, you guessed: " << guess << " and the number was: " 
+	   << rNumGenerated << ".\n" <<endl;
+
+    }
+    
+    // take the next key so see if you keep playing or to end game
+    cout << "***********************************************************" << endl;
+    cout << "\nPress any key to keep playing or 'q' to quit.\n" << endl;
+
+    cin >> key;
+
+  } while (key != 'q');
+
+  // end program whenever the while loop terminates
+  return;
+}
+
+int main() {
+  // call this method to play game                                                                  
+  playGuessGame();
+
+  return 0;
+}

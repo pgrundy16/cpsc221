@@ -5,7 +5,7 @@
     empty:        Checks if a heap is empty
     insert:       Modifies a heap by adding a value at valid location
     deleteMax:    Modifies tree by removing the value with maximum priority
-	size:         Produces the number of items currently in a heap
+    size:         Produces the number of items currently in a heap
 ---------------------------------------------------------------------------*/
 #pragma once
 #include <vector>

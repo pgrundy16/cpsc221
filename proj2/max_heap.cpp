@@ -34,46 +34,68 @@ text_item& max_heap::top() {
 	return data[0];
 }
 
-
-//--- You must comple the following functions: 
-
+/* Functions Below : Completed by Eduardo */
 
 text_item max_heap::delete_max() {
 	if (empty()) {
 		throw std::logic_error("Cannot delete, heap is empty!");
+
 	} else {
-		// ADD CODE HERE
-		
-		// Fix this so it correctly deletes
-		// and maintains the heap-order property
-		// required for a max-heap
-		
-		// returning something so it compiles:
-		return top();
+
+		text_item retVal = data[0];
+		data[0] = data[numItems-1];
+		numItems--;
+		max_heap::swap_down(0);
+
+		return retVal;
 	}
 }
 
 void max_heap::swap_down(int i) {
-	// ADD CODE HERE
-		
-	// Fix this so it correctly swaps
+
+	int s = i;
+	int left = i * 2 + 1;
+	int right = left + 1;
+	
+	/* If left is still a valid index. */
+	if( left < numItems && data[left].freq > data[s].freq )
+		s = left;
+	
+	/* If right is still a valid index. */
+	if( right < numItems && data[right].freq > data[s].freq )
+		s = right;
+	
+	if( s != i ) {
+		text_item tmp = data[i];
+		data[i] = data[s];
+		data[s] = tmp;
+		max_heap::swap_down(s);
+	}
+
 }
 
 void max_heap::insert(const text_item & item) {
 	if (full()) {
 		throw std::logic_error("Cannot insert, heap array is full!");
 	} else {
-		// ADD CODE HERE
-		
-		// Fix this so it correctly inserts
-		// and maintains the heap-order property
-		// required for a max-heap
 		data[numItems++] = item;
+		max_heap::swap_up(numItems-1);
 	}
 }
 
 void max_heap::swap_up(int i) {
-	// ADD CODE HERE
-		
-	// Fix this so it correctly swaps
+	
+	/* Check if already at top. */
+	if( i == 0 ) return;
+
+	/* Get parent. */
+	int p = (i - 1) / 2;
+	
+	if( data[i].freq > data[p].freq ) {
+		text_item tmp = data[i];
+		data[i] = data[p];
+		data[p] = tmp;
+
+		max_heap::swap_up(p);
+	}
 }

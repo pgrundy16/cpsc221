@@ -7,6 +7,7 @@
 
 using namespace std;
 
+
 //--- PART 1A: Implementation and testing of heap insert
 void heap_insert_tests(max_heap &hp) {
 	text_item temp;
@@ -31,12 +32,43 @@ void heap_insert_tests(max_heap &hp) {
 	}
 	
 	//--- Specific insert functionality that should be tested:
-	
-	// insert without any swap_ups needed
-		// <INSERT TEST(S) HERE>
 		
+	max_heap h2(10);
+
+	cout << "\n ++ Eduardo Testing ++" << endl;
+
+	// insert without any swap_ups needed
+	
+	h2.insert(text_item{"New", 1000 });
+	std::cout << "Top of heap is: " << h2.top() << std::endl;		
+
+	h2.insert(text_item{"New", 1500 });
+	std::cout << "Top of heap is: " << h2.top() << std::endl;		
+
+	h2.insert(text_item{"New", 2000 });
+	std::cout << "Top of heap is: " << h2.top() << std::endl;		
+
+	h2.insert(text_item{"New", 2500 });
+	std::cout << "Top of heap is: " << h2.top() << std::endl;		
+
+	h2.delete_max();
+	h2.delete_max();
+	h2.delete_max();
+	h2.delete_max();
+
 	// insert with a swap_up / multiple swap_ups
 		// <INSERT TEST(S) HERE>
+	h2.insert(text_item{"New", 45 });
+	std::cout << "Top of heap is: " << h2.top() << std::endl;		
+
+	h2.insert(text_item{"New", 35 });
+	std::cout << "Top of heap is: " << h2.top() << std::endl;		
+
+	h2.insert(text_item{"New", 25 });
+	std::cout << "Top of heap is: " << h2.top() << std::endl;		
+
+	cout << " ++ End of Eduardo Testing ++" << endl;
+
 }
 
 //--- PART 1B: Implementation and testing of heap delete
@@ -54,15 +86,46 @@ void heap_delete_tests(max_heap &hp) {
 	}
 	
 	//--- Specific insert functionality that should be tested:
-	
+		
+	max_heap h2(10);
+
+	cout << "\n ++ Eduardo Testing ++" << endl;
+
 	// remove_max works when swap_down with left child
 		// <INSERT TEST(S) HERE>
-		
+	h2.insert(text_item{"New", 1000 });
+	std::cout << "Top of heap is: " << h2.top() << std::endl;		
+
+	h2.insert(text_item{"New", 1500 });
+	std::cout << "Top of heap is: " << h2.top() << std::endl;		
+	
+	/* Delete Expected */
+	std::cout << "Deleted top" << endl;
+	h2.delete_max();
+	std::cout << "Expected Top: 1000" << endl;
+	std::cout << "Top of heap is: " << h2.top() << "\n" << std::endl;		
+
 	// remove_max workd when swap_down with right child
-		// <INSERT TEST(S) HERE>
-		
+	h2.insert(text_item{"New", 800 });
+	std::cout << "Top of heap is: " << h2.top() << std::endl;		
+
+	h2.insert(text_item{"New", 900 });
+	std::cout << "Top of heap is: " << h2.top() << std::endl;		
+	
+	/* Delete Expected */
+	std::cout << "Deleted top" << endl;
+	h2.delete_max();
+	std::cout << "Expected Top: 1000" << endl;
+	std::cout << "Top of heap is: " << h2.top() << "\n" << std::endl;		
+
 	// remove_max on an empty heap (should throw exception similar to top())
-		// <INSERT TEST(S) HERE>
+	while(!h2.empty())
+		h2.delete_max();
+
+	/* Empty, and try again. */
+	// h2.delete_max();	
+
+	cout << " ++ End of Eduardo Testing ++" << endl;
 		
 }
 
@@ -80,23 +143,60 @@ void tree_tester(string_bst const &tree) {
 			<< " time(s)." << std::endl;
 	}
 	
-	//--- Specific word_frequency functionality that should be tested:
+	//--- Specific insert functionality that should be tested:
+
+	cout << "\n ++ Eduardo Testing ++ \n" << endl;
 	
 	// can search through both left and right subtrees if not found at current node
-		// <INSERT TEST(S) HERE>
+	string_bst test;
+	test.insert("daniel");
+	test.insert("carlos");
+	test.insert("beto");
+	test.insert("albert");
+	test.insert("daniel");
+	test.insert("daniel");
+
+	/* What is the freq of 'daniel'? */
+	std::cout << "Searching for 'daniel': Expected freq return is 3. " << endl;
+	std::cout << "Word 'daniel' Freq: " << test.word_frequency("daniel") << "\n" << endl;	
 		
 	// returns 0 if word is not found
-		// <INSERT TEST(S) HERE>
+	/* What is the freq 'david'? */
+	std::cout << "Searching for 'david': Expected freq return is 0. " << endl;
+	std::cout << "Word 'david' Freq: " << test.word_frequency("david") << "\n" << endl;	
 			
+	cout << " ++ End of Eduardo Testing ++" << endl;
 }
 
 //--- PART 3: Implementation and testing of word frequency analysis
 void overall_most_freq(max_heap hp) {
 	std::cout << "*** Top 5 most frequent words: ***" << std::endl;
-	
+
 	//--- Add your code to print out the 5 most frequent words below:
 	if (hp.size() > 1) {
 		std::cout << "Most frequent text item: " << hp.top() << std::endl;
+		
+		int size = hp.size();
+		text_item holder[5];
+
+		for(int i=0; i < size; i++)
+		{
+			/* Iterate, at most, 5 times */
+			if(i == 5) break;
+
+			/* Store each el., then delete it. */
+			holder[i] = hp.top();
+			hp.delete_max();
+		}
+
+		/* Print out the top 5. */
+		for(text_item e : holder) {
+			cout << "Item: " << e.word << " and freq: "
+				<< e.freq << "." << endl;
+			
+			/* Add top 5 back to max-heap. */
+			hp.insert(e);
+		}
 	}
 
 }
@@ -107,7 +207,43 @@ void at_least_length(max_heap hp, size_t num_letters) {
 		
 	//--- Add code to print out the 5 most common
 	//--- words of length at least <num_letters>
+		
+	int size = hp.size();
+	int h_count = 0, n_count = 0;
+	text_item holder[5];
+	text_item necessary[size];
 
+	for(int i=0; i < size; i++)
+	{
+
+		/* Iterate, at most, 5 times */
+		if(h_count == 5) break;
+
+		/* Store each el., then delete it. */
+		text_item temp = hp.top();
+
+		/* Store all items here. */
+		necessary[n_count++] = temp;
+
+		/* Check for desired str len. */
+		if(temp.word.length() >= num_letters) {
+			holder[h_count++] = temp;
+		}
+
+			/* Pop item and move to next. */
+			hp.delete_max();
+	}
+
+	/* Print out the top 5. */
+	for(int i = 0; i < h_count; i++) {
+		cout << "Item: " << holder[i].word << " and freq: "
+			<< holder[i].freq << "." << endl;
+	}
+
+	/* Add all items back to heap. */
+	for(int i = 0; i < n_count; i++) {
+		hp.insert(necessary[i]);
+	}
 	
 }
 
@@ -117,6 +253,15 @@ void starts_with(max_heap hp, char starts_with_letter) {
 		
 	//--- Add code to print out the 5 most common words
 	//--- that start with the letter <starts_with_letter>
+
+
+
+
+
+
+
+
+
 
 	
 }
@@ -140,9 +285,12 @@ void heap_tester() {
 	// PART 1A:
 	std::cout << std::endl << "BEGINNING TESTS FOR PART 1A" << std::endl;
 	heap_insert_tests(hp);
+	
+
 	// PART 1B:
 	std::cout << std::endl << "BEGINNING TESTS FOR PART 1B" << std::endl;
 	heap_delete_tests(hp);
+
 }
 
 void text_analysis_tester(string_bst &tree) {
@@ -155,11 +303,13 @@ void text_analysis_tester(string_bst &tree) {
 											// with different characters
 }
 
+
+
 int main(int argc, char* argv[]) {
 	
 	//--- Part 1: max_heap implementation
 	heap_tester(); 
-	
+
 	//--- Part 2: string_bst implementation
 	string_bst tree;
 	load_bst("sample1.txt", tree); // create a bst from an input file.

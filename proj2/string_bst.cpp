@@ -40,7 +40,7 @@ void string_bst::insert_helper(node_t *& n, tree_key const & key) {
   	} else if (n->data.word == key) {
 	  	n->data.freq++;
   	} else if (key < n->data.word) {
-		insert_helper(n->left, key);
+		  insert_helper(n->left, key);
   	} else {
 	  	insert_helper(n->right, key);
   	}
@@ -68,10 +68,37 @@ string_bst::node_t* string_bst::get_root() const {
 	return root;
 }
 
+
+/* Written by Eduardo */
 int string_bst::word_frequency(const tree_key &key) const {
-	
-	// ADD CODE HERE
-		
-	return 0;
+  
+  /* If our tree is empty. */
+  if(!root) return 0;
+
+  /* Iterator tools. */
+  string_bst::node_t* it = root;
+  // std::cout << "++Current : " << root->data.word << " and "
+    // << root->data.freq << std::endl;
+  string_bst::node_t* cur_lvl;
+
+  while(it != NULL) {
+    /* Keep the current pos */
+    cur_lvl = it;
+
+    // std::cout<<"Current: " << it->data.word;
+    // std::cout<<" with freq : " << it->data.freq << std::endl;
+
+    /* Check if equals, left, or right. */
+    if(it->data.word == key) 
+      return it->data.freq;
+    else if(key < cur_lvl->data.word)
+      it = cur_lvl->left;
+    else
+      it = cur_lvl->right; 
+
+  }
+
+  /* If not found. */
+  return 0;
 }
 

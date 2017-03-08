@@ -112,5 +112,5 @@ class max_heap
     Postcondition: w is added and heap invariant holds
   -----------------------------------------------------------------------*/
   void insert(text_item const& item);
-  
+
 }; // end of class declaration

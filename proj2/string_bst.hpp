@@ -4,7 +4,7 @@
   Basic operations:
     constructor:  Constructs an empty tree
     empty:        Checks if a tree is empty
-    insert:          Modifies a tree by adding a value at correct location, or updates equivalent value
+    insert:       Modifies a tree by adding a value at correct location, or updates equivalent value
     root:         Accesses the root of the tree's value; leaves tree unchanged
     remove:       Modifies tree by removing the value with equivalent key
     display:      Displays all the tree's elements
@@ -24,10 +24,11 @@ class string_bst
  public:
   struct node_t;
   struct node_t {
-	text_item data;
-	node_t * left;
-	node_t * right;
+  	text_item data;
+  	node_t * left;
+  	node_t * right;
   };
+  
   /***** Function Members *****/
 
   /*-----------------------------------------------------------------------

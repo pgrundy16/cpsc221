@@ -1,0 +1,128 @@
+eduardo@eduardo-DX4850:~/Documents/repositories/ubc/cpsc221/proj2$ ./main 
+Created heap of size 10
+Current number of items in heap is: 0
+Heap is empty, can't access top!
+
+BEGINNING TESTS FOR PART 1A
+*** TESTING INSERT ***
+adding item1,  with number 1 to heap
+Top of heap is: text_item{"item1",1}
+adding item2,  with number 24 to heap
+Top of heap is: text_item{"item2",24}
+adding item3,  with number 56 to heap
+Top of heap is: text_item{"item3",56}
+adding item4,  with number 43 to heap
+Top of heap is: text_item{"item3",56}
+adding item5,  with number 76 to heap
+Top of heap is: text_item{"item5",76}
+
+ ++ Eduardo Testing ++
+
+Top of heap is: text_item{"New",1000}
+Top of heap is: text_item{"New",1500}
+Top of heap is: text_item{"New",2000}
+Top of heap is: text_item{"New",2500}
+Top of heap is: text_item{"New",45}
+Top of heap is: text_item{"New",45}
+Top of heap is: text_item{"New",45}
+
+ ++ End of Eduardo Testing ++
+
+
+BEGINNING TESTS FOR PART 1B
+*** TESTING DELETEMAX ***
+Item returned from heap delete: text_item{"item5",76}
+Top of heap is now: text_item{"item3",56}
+
+ ++ Eduardo Testing ++
+
+Top of heap is: text_item{"New",1000}
+Top of heap is: text_item{"New",1500}
+Deleted top
+Expected Top: 1000
+Top of heap is: text_item{"New",1000}
+
+Top of heap is: text_item{"New",1000}
+Top of heap is: text_item{"New",1000}
+Deleted top
+Expected Top: 1000
+Top of heap is: text_item{"New",900}
+
+
+ ++ End of Eduardo Testing ++
+
+
+BEGINNING TESTS FOR PART 2
+Found: difficult in the input file 1 time(s).
+
+ ++ Eduardo Testing ++ 
+
+Searching for 'daniel': Expected freq return is 3. 
+Word 'daniel' Freq: 3
+
+Searching for 'david': Expected freq return is 0. 
+Word 'david' Freq: 0
+
+
+ ++ End of Eduardo Testing ++
+
+
+BEGINNING TESTS FOR PART 3
+*** Top 5 most frequent words: ***
+Most frequent text item: text_item{"a",4}
+Item: a and freq: 4.
+Item: to and freq: 4.
+Item: is and freq: 3.
+Item: when and freq: 3.
+Item: calculate and freq: 2.
+
+*** Top 5 most frequent words with at least 8 letters ***
+Item: calculate and freq: 2.
+Item: alphabetically and freq: 2.
+Item: considered and freq: 1.
+Item: carefully and freq: 1.
+Item: implement and freq: 1.
+
+*** Top 5 most frequent words that begin with c ***
+Item: calculate and freq: 2.
+Item: considered and freq: 1.
+Item: carefully and freq: 1.
+Item: careful and freq: 1.
+
+BEGINNING TESTS FOR PART 2
+Found: difficult in the input file 39 time(s).
+
+ ++ Eduardo Testing ++ 
+
+Searching for 'daniel': Expected freq return is 3. 
+Word 'daniel' Freq: 3
+
+Searching for 'david': Expected freq return is 0. 
+Word 'david' Freq: 0
+
+
+ ++ End of Eduardo Testing ++
+
+
+BEGINNING TESTS FOR PART 3
+*** Top 5 most frequent words: ***
+Most frequent text item: text_item{"the",40506}
+Item: the and freq: 40506.
+Item: of and freq: 19652.
+Item: and and freq: 14786.
+Item: a and freq: 14315.
+Item: to and freq: 13761.
+
+*** Top 5 most frequent words with at least 8 letters ***
+Item: th�nardier and freq: 520.
+Item: something and freq: 361.
+Item: monsieur and freq: 360.
+Item: gavroche and freq: 308.
+Item: everything and freq: 304.
+
+*** Top 5 most frequent words that begin with c ***
+Item: cosette and freq: 1000.
+Item: could and freq: 675.
+Item: come and freq: 548.
+Item: child and freq: 453.
+Item: can and freq: 432.

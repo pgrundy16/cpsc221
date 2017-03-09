@@ -95,7 +95,6 @@ int string_bst::word_frequency(const tree_key &key) const {
       it = cur_lvl->left;
     else
       it = cur_lvl->right; 
-
   }
 
   /* If not found. */

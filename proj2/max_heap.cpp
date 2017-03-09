@@ -41,12 +41,15 @@ text_item max_heap::delete_max() {
 		throw std::logic_error("Cannot delete, heap is empty!");
 
 	} else {
-
+		/* Hold the root to return. */
 		text_item retVal = data[0];
+
+		/* Select new root as last and perform heapify. */
 		data[0] = data[numItems-1];
 		numItems--;
 		max_heap::swap_down(0);
 
+		/* Return prev root. */
 		return retVal;
 	}
 }
@@ -65,6 +68,7 @@ void max_heap::swap_down(int i) {
 	if( right < numItems && data[right].freq > data[s].freq )
 		s = right;
 	
+	/* If s has changed. */
 	if( s != i ) {
 		text_item tmp = data[i];
 		data[i] = data[s];
@@ -91,11 +95,13 @@ void max_heap::swap_up(int i) {
 	/* Get parent. */
 	int p = (i - 1) / 2;
 	
+	/* Check if swap is necessary. */
 	if( data[i].freq > data[p].freq ) {
 		text_item tmp = data[i];
 		data[i] = data[p];
 		data[p] = tmp;
 
+		/* Call the top. */
 		max_heap::swap_up(p);
 	}
 }

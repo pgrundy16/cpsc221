@@ -35,7 +35,7 @@ void heap_insert_tests(max_heap &hp) {
 		
 	max_heap h2(10);
 
-	cout << "\n ++ Eduardo Testing ++" << endl;
+	cout << "\n ++ Eduardo Testing ++\n" << endl;
 
 	// insert without any swap_ups needed
 	
@@ -67,7 +67,7 @@ void heap_insert_tests(max_heap &hp) {
 	h2.insert(text_item{"New", 25 });
 	std::cout << "Top of heap is: " << h2.top() << std::endl;		
 
-	cout << " ++ End of Eduardo Testing ++" << endl;
+	cout << "\n ++ End of Eduardo Testing ++\n" << endl;
 
 }
 
@@ -89,7 +89,7 @@ void heap_delete_tests(max_heap &hp) {
 		
 	max_heap h2(10);
 
-	cout << "\n ++ Eduardo Testing ++" << endl;
+	cout << "\n ++ Eduardo Testing ++\n" << endl;
 
 	// remove_max works when swap_down with left child
 		// <INSERT TEST(S) HERE>
@@ -125,7 +125,7 @@ void heap_delete_tests(max_heap &hp) {
 	/* Empty, and try again. */
 	// h2.delete_max();	
 
-	cout << " ++ End of Eduardo Testing ++" << endl;
+	cout << "\n ++ End of Eduardo Testing ++\n" << endl;
 		
 }
 
@@ -165,7 +165,7 @@ void tree_tester(string_bst const &tree) {
 	std::cout << "Searching for 'david': Expected freq return is 0. " << endl;
 	std::cout << "Word 'david' Freq: " << test.word_frequency("david") << "\n" << endl;	
 			
-	cout << " ++ End of Eduardo Testing ++" << endl;
+	cout << "\n ++ End of Eduardo Testing ++\n" << endl;
 }
 
 //--- PART 3: Implementation and testing of word frequency analysis
@@ -215,7 +215,6 @@ void at_least_length(max_heap hp, size_t num_letters) {
 
 	for(int i=0; i < size; i++)
 	{
-
 		/* Iterate, at most, 5 times */
 		if(h_count == 5) break;
 
@@ -254,16 +253,41 @@ void starts_with(max_heap hp, char starts_with_letter) {
 	//--- Add code to print out the 5 most common words
 	//--- that start with the letter <starts_with_letter>
 
+	int size = hp.size();
+	int h_count = 0, n_count = 0;
+	text_item holder[5];
+	text_item necessary[size];
 
+	for(int i=0; i < size; i++)
+	{
+		/* Iterate, at most, 5 times */
+		if(h_count == 5) break;
 
+		/* Store each el., then delete it. */
+		text_item temp = hp.top();
 
+		/* Store all items here. */
+		necessary[n_count++] = temp;
 
+		/* Check for desired str len. */
+		if(temp.word[0] == starts_with_letter) {
+			holder[h_count++] = temp;
+		}
 
+			/* Pop item and move to next. */
+			hp.delete_max();
+	}
 
+	/* Print out the top 5. */
+	for(int i = 0; i < h_count; i++) {
+		cout << "Item: " << holder[i].word << " and freq: "
+			<< holder[i].freq << "." << endl;
+	}
 
-
-
-	
+	/* Add all items back to heap. */
+	for(int i = 0; i < n_count; i++) {
+		hp.insert(necessary[i]);
+	}	
 }
 
 void heap_tester() {	
@@ -303,8 +327,7 @@ void text_analysis_tester(string_bst &tree) {
 											// with different characters
 }
 
-
-
+/* Main Function. */
 int main(int argc, char* argv[]) {
 	
 	//--- Part 1: max_heap implementation
@@ -317,5 +340,12 @@ int main(int argc, char* argv[]) {
 	
 	//--- Part 3: word frequency analysis of text files
 	text_analysis_tester(tree);
+
+	/* Part 3: Part 2 */
+	string_bst t2;
+	load_bst("sample2.txt", t2);
+	tree_tester(t2);
+
+	text_analysis_tester(t2);
 
 }

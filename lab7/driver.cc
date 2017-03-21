@@ -11,49 +11,92 @@ void usage(char* argv[]) {
 	exit(-1);
 }
 
+/* Main Function Testing
+ * 
+ * Run : ./hash [charHashType] [numKeys] [sizeofHashtable]
+ * 
+ * Exampe: ./hash q 900000 1000000 
+ * Runs quadratic probing with 900,000 keys in a size 1,000,000 Hashtable.
+ *
+ * Where,	argc 	: num arguments
+ * 			argv[] 	: the two-dimensional character array with all args
+ *			
+ *			argv[0][0] : ./hash
+ *			argv[1][0] : [charHashType]
+ *			argv[2][0] : [numKeys]
+ *			argv[3][0] : [sizeofHashtable]
+ */
 int main(int argc, char *argv[]) {
 	int n, m;
 	srand(time(0));
 
-	if (argc == 1) {
-		cout << "Running your test code..." << endl;
+	/* If only passed the type of Hash algorithm to run. */
+	if (argc == 1) 
+	{
+		/* Check if success. */
+		cout << "You are running Eduardo's tests." << endl;
+
 		/* ADD YOUR TEST CODE HERE */
+
 
 		return 0;
 	}
 	
-	if (argc != 4) {
-		usage(argv);
-	}
+	/* If argument count is not valid,
+		call usage() and exit program. */
+	if (argc != 4) usage(argv);
+
+	/* Atoi : ASCII to Integer
+		Where,
+			n = [numKeys]
+			m = [sizeofHashtable]
+	*/
 	n = atoi(argv[2]);
 	m = atoi(argv[3]);
+
+	/* Initialize a Hashtable. */
 	Hashtable H(m);
 	
-	switch(argv[1][0]) {
+	/* Switch statement with [charType] algorithm. */
+	switch(argv[1][0]) 
+	{
+	/* Run Linear Probing. */
 	case 'l':
-		for (int i=0; i<n; ++i) {
+		/* Insert n random numbers into Hashtable
+			using Linear Probing. */
+		for (int i=0; i<n; ++i) 
 			H.linsert(rand() + 1);
-		}
+
 		//    H.print();
 		cout << "Linear: ";  
 		H.printStats();
 		break;
+
+	/* Run Quadratic Probing */
 	case 'q':
-		for (int i=0; i<n; ++i) {
+		/* Insert n random numbers into Hashtable
+			using Quadratic Probing. */
+		for (int i=0; i<n; ++i) 
 			H.qinsert(rand() + 1);
-		}
+
 		//    H.print();
 		cout << "Quadratic: ";
 		H.printStats();
 		break;
+
+	/* Run Double Hashing */
 	case 'd':
-		for (int i=0; i<n; ++i) {
+		/* Insert n random numbers into Hashtable 
+			using Double Hashing. */
+		for (int i=0; i<n; ++i) 
 			H.dinsert(rand() + 1);
-		}
+
 		//    H.print();
 		cout << "Double Hashing: "; 
 		H.printStats();
 		break;
+
+	/* Exit program if char not valid. */
 	default:
 		usage(argv);
 	}

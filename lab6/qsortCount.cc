@@ -47,10 +47,10 @@ void quicksort(int a, int b) {
   
   /* In-Place Partition */  
   for (i = a+1; i <= b; i++) {
+    /* Increment comparisons*/
+    comps++;
     if (x[i] < x[a]) 
     {
-      /* Increment comparisons*/
-      comps++;
 
       /* Swap. */
       swap(x[++m], x[i]);

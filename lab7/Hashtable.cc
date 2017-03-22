@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <cassert> 
+#include <math.h>
 
 using namespace std; 
 
@@ -79,6 +80,15 @@ int Hashtable::hash(int k) {
 	return k % _size;
 }
 
+/* Returns the seconary hash function. */
+int Hashtable::hash2(int k)
+{
+	/* My prime number */
+	int r = 3;
+
+	return ( r - ( k % r) );
+}
+
 /* Quadratic Probing Insert Algorithm
  *
  * Precondition: 
@@ -104,7 +114,62 @@ void Hashtable::qinsert(int k) {
 
     // ************* ADD YOUR CODE HERE *******************
     
-    
+    bool flag = false;
+    int original_index = hash(k);
+    int index = original_index;
+    int numProbes = 0;
+    int multiple = 1;
+
+	/* If desired index is empty. */	
+	if(_table[index] == -1) 
+	{
+		// Testing
+		cout << "Empty location found for key " 
+		<< k << " at index " << index << endl;
+		
+		_table[index] = k; 
+		return; 
+	}
+
+	index = index + pow((multiple++), 2);
+	numProbes++;
+
+	/* Loop around. */
+	if(index >= _size && !flag)
+	{
+		/* Turn flag */
+		flag = true;
+		index = index % _size;
+	}
+
+	/* Quadratic Probing */
+	while( (original_index < index && !flag) || (index < original_index && flag) )
+	{
+
+		/* Check if empty spot found. */
+		if(_table[index] == -1)
+		{
+			_table[index] = k;
+			tallyProbes(numProbes);
+
+			// Testing
+			cout << "Other location found for " << k 
+			<< " at index " << index << endl; 
+			return;
+		}
+
+		/* Loop around. */
+		if(index >= _size && !flag)
+		{
+			/* Turn flag */
+			flag = true;
+			index = index % _size;
+		}
+		
+		index += pow((multiple++), 2);
+		numProbes++;
+		
+	}
     
     // Your method should return after it stores the value in an EMPTY slot 
     // and calls tallyProbes, so if it gets here, it didn't find an EMPTY slot 
@@ -118,32 +183,45 @@ void Hashtable::linsert(int k) {
 
     // ************* ADD YOUR CODE HERE *******************
     
-    int index = hash(k);
+    int original_index = hash(k);
+    int index = original_index;
     int numProbes = 0;
 	
 	/* If desired index is empty. */	
 	if(_table[index] == -1) 
 	{
-		cout << "Adding " << k << " to first index " << index << "." << endl;
+		// Testing
+		cout << "Empty location found for key " 
+		<< k << " at index " << index << endl;
+		
 		_table[index] = k; 
 		return; 
 	}		
 
 	/* Look until first empty index is found. */
-	while(_table[index++] != -1)
+	index = (index == (_size -1)) ? 0 : (index + 1);
+	numProbes++;
+
+	while(index != original_index)
 	{
-		if(_size == (index - 1)) index = 0;
+		/* Loop back around. */
+		if(index == _size) 
+			index = 0;
+
+		if(_table[index] == -1)
+		{
+			_table[index] = k;
+			tallyProbes(numProbes);
+
+			// Testing
+			cout << "Other location found for " << k 
+			<< " at index " << index << endl; 
+			return;
+		}
+		
+		index++;
 		numProbes++;
 	}
-
-	// Testing
-	cout << "Adding " << k << " to index " << index 
-	<< " with numProbes: " << numProbes << "." << endl;
-
-	/* Insert to index, tally, and return. */
-	_table[index] = k;
-	tallyProbes(numProbes);
-	return;
     
     // Your method should return after it stores the value in an EMPTY slot 
     // and calls tallyProbes, so if it gets here, it didn't find an EMPTY slot 
@@ -158,7 +236,65 @@ void Hashtable::dinsert(int k) {
 
     // ************* ADD YOUR CODE HERE *******************
     
-    
+    bool flag = false;
+    int original_index = hash(k);
+    int index = original_index;
+    int numProbes = 0;
+
+	/* If desired index is empty. */	
+	if(_table[index] == -1) 
+	{
+		// Testing
+		cout << "Empty location found for key " 
+		<< k << " at index " << index << endl;
+		
+		_table[index] = k; 
+		tallyProbes(numProbes);
+		return; 
+	}
+
+	/* Declare only a second-hash on collisions. */
+    int multiple = 1;
+	int buckets = hash2(k);
+
+	/* Look until first empty index is found. */
+	index = ( index + (buckets * multiple++) ) % _size;
+	numProbes++;
+	
+	/* Loop around. */
+	if(index >= _size && !flag)
+	{
+		/* Turn flag */
+		flag = true;
+		index = index % _size;
+	}
+
+
+	/* Quadratic Probing */
+	while( (original_index < index && !flag) || (index < original_index && flag) )
+	{
+		/* Check if empty spot found. */
+		if(_table[index] == -1)
+		{
+			_table[index] = k;
+			tallyProbes(numProbes);
+
+			// Testing
+			cout << "Other location found for " << k 
+			<< " at index " << index << endl; 
+			return;
+		}
+		
+		/* Loop around. */
+		if(index >= _size && !flag)
+		{
+			/* Turn flag */
+			flag = true;
+		}
+		
+		numProbes++;
+		index = ( index + (buckets * multiple++) ) % _size;
+	}
     
     // Your method should return after it stores the value in an EMPTY slot 
     // and calls tallyProbes, so if it gets here, it didn't find an EMPTY slot 

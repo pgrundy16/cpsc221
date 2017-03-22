@@ -13,6 +13,7 @@ public:
 	/* Public Functions Below. */
 
 	int hash(int key);
+	int hash2(int key);
 
 	// Quadratic Probing
 	void qinsert(int key);

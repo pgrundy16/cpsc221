@@ -127,7 +127,8 @@ void Hashtable::qinsert(int k) {
 		cout << "Empty location found for key " 
 		<< k << " at index " << index << endl;
 		
-		_table[index] = k; 
+		_table[index] = k;
+		tallyProbes(numProbes); 
 		return; 
 	}
 
@@ -135,7 +136,7 @@ void Hashtable::qinsert(int k) {
 	numProbes++;
 
 	/* Loop around. */
-	if(index >= _size && !flag)
+	if(index >= _size)
 	{
 		/* Turn flag */
 		flag = true;
@@ -143,18 +144,18 @@ void Hashtable::qinsert(int k) {
 	}
 
 	/* Quadratic Probing */
-	while( (original_index < index && !flag) || (index < original_index && flag) )
+	while( (original_index <= index && !flag) || (index <= original_index && flag) )
 	{
 
 		/* Check if empty spot found. */
 		if(_table[index] == -1)
 		{
-			_table[index] = k;
-			tallyProbes(numProbes);
-
 			// Testing
 			cout << "Other location found for " << k 
 			<< " at index " << index << endl; 
+			
+			_table[index] = k;
+			tallyProbes(numProbes);
 			return;
 		}
 
@@ -195,11 +196,12 @@ void Hashtable::linsert(int k) {
 		<< k << " at index " << index << endl;
 		
 		_table[index] = k; 
+		tallyProbes(numProbes);
 		return; 
 	}		
 
 	/* Look until first empty index is found. */
-	index = (index == (_size -1)) ? 0 : (index + 1);
+	index = (index == _size) ? 0 : (index + 1);
 	numProbes++;
 
 	while(index != original_index)

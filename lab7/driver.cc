@@ -160,11 +160,11 @@ int main(int argc, char *argv[]) {
 
 		/* === Test 1 === */
 
-		// for (int i = 0; i < 7500; i++) {
-		// 	lin.linsert(rand() + 1);
-		// 	quad.qinsert(rand() + 1);
-		// 	doub.linsert(rand() + 1);
-		// }
+		for (int i = 0; i < 7500; i++) {
+			lin.linsert(rand() + 1);
+			quad.qinsert(rand() + 1);
+			doub.linsert(rand() + 1);
+		}
 
 		cout << "\n++ Stats 1: \n" << endl;
 

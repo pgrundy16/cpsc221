@@ -3,14 +3,27 @@
 
 #define EMPTY -1	// indicates an empty slot (so don't hash -1)
 
+/* Defined Hashtable with functions. */
 class Hashtable {
 public:
+	/* Constructor / Destructor */
 	Hashtable(int size);
 	~Hashtable();
+
+	/* Public Functions Below. */
+
 	int hash(int key);
+	int hash2(int key);
+
+	// Quadratic Probing
 	void qinsert(int key);
+	
+	// Linear Probing
 	void linsert(int key);
+
+	// Double Hashing
 	void dinsert(int key);
+
 	void print();
 	void printStats();
 	float probeRate();

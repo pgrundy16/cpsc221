@@ -15,7 +15,7 @@ public:
 	void assertvectorEquals(std::string msg, std::vector<int>& expected, std::vector<int>& actual);
 	void assertNonNull(std::string msg, void* actual);
 	void assertNull(std::string msg, void* actual);
-    void assertTrue(std::string msg, bool actual); 
+	void assertTrue(std::string msg, bool actual); 
 	void printResults();
 
 	void insistNonNull(std::string msg, void* actual);

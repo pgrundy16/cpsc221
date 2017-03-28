@@ -5,6 +5,7 @@
 #include <cassert> // provides assert()
 #include <vector> 
 #include <string> 
+#include <cmath>   
 #include "Unit.h" 
 
 // ********** DO NOT CHANGE ANYTHING EXCEPT: **************************
@@ -16,6 +17,8 @@
 Unit unit; // Unit testing framework 
 std::vector<int> visitor; 
 std::vector<int> expected; 
+
+using namespace std;
 
 typedef int KType;
 
@@ -107,6 +110,7 @@ void rotateLeft( Node *& root ) {
   updateHeight(temp);
   root = temp;
 }
+
 /**
  * "rotates" the subtree to the right (clockwise)
  */
@@ -168,7 +172,39 @@ void doubleRotateRight( Node *& a ) {
   // or doubleRotateRight, whichever is appropriate.
   //
 void balance( Node *& x ) {
-	//TODO: write this function  
+
+  /* When you run out of nodes recursively. */
+  if(x == NULL) 
+    return;
+
+  int h_right  = height(x->right);
+  int h_left  = height(x->left);
+  
+  if(abs(h_right - h_left) == 1) return;
+  
+  if(h_right < h_left)
+  {
+    if(height(x->left->left) > height(x->left->right))
+    {
+      rotateRight(x);
+    } 
+    else
+    {
+      doubleRotateRight(x);
+    }
+  } 
+  else
+  {
+    if(height(x->right->right) > height(x->right->left))
+    {
+      rotateLeft(x);
+    }
+    else
+    {
+      doubleRotateLeft(x);
+    }
+  }
+
 }
 
 // ********** DO NOT CHANGE BELOW HERE ****************
@@ -237,6 +273,7 @@ void printTreeHelper( Node * r, int d ) {
 void printTree( Node * r ) {
   printTreeHelper( r, 0 );
 }
+
 // *******************************************
 // records keys, heights, levels as tree is traversed
 void visitTreeHelper( Node* root, int level, std::vector<int>& visitor){
@@ -247,9 +284,11 @@ void visitTreeHelper( Node* root, int level, std::vector<int>& visitor){
   visitor.push_back( level ); 
   visitTreeHelper( root->left, level + 1, visitor);
 }  
+
 void visitTree(Node* root, std::vector<int>& visitor){ 
   visitTreeHelper( root, 0, visitor);
 }
+
 // values for default keys on tree traverals 
 int traversalValues [] = { 70,0,0,
   70,1,0,10,0,1,
@@ -261,11 +300,16 @@ int traversalValues [] = { 70,0,0,
   70,0,2,60,1,1,50,3,0,40,0,3,30,1,2,25,0,3,20,2,1,10,0,2,
   70,0,2,60,1,1,50,3,0,40,0,3,30,1,2,27,0,3,25,2,1,20,1,2,10,0,3,
   70,0,2,60,1,1,50,3,0,40,0,3,30,1,2,27,0,3,25,2,1,20,0,3,10,1,2,5,0,3 };
-void prepareExpected(int num_to_skip, int num_to_take, std::vector<int>& vv){
+
+void prepareExpected(int num_to_skip, int num_to_take, std::vector<int>& vv)
+{
   vv.clear();
-  for (int ii = num_to_skip; ii < num_to_skip + num_to_take; ++ ii ){ 
+ 
+  for (int ii = num_to_skip; ii < num_to_skip + num_to_take; ++ ii )
+  { 
     vv.push_back( traversalValues [ii] ); 
   }
+
   return;
 }
   
@@ -277,29 +321,37 @@ int main( int argc, char *argv[] ) {
   int *keys;
   int num_keys;
 
-  if( argc == 1 ) {	// if no command line args use default keys
+  if( argc == 1 ) 
+  {	// if no command line args use default keys
     num_keys = sizeof(defaultKeys)/sizeof(int);
     keys = new int[num_keys];
-    for( int i=0; i < num_keys; ++i ) {
+    
+    for( int i=0; i < num_keys; ++i ) 
+    {
       keys[i] = defaultKeys[i];
     }
   }
   else {		// use keys given on command line
     num_keys = argc - 1;
     keys = new int[num_keys];
-    for( int i=0; i < num_keys; ++i ) {
+    
+    for( int i=0; i < num_keys; ++i ) 
+    {
       keys[i] = atoi(argv[i+1]);
     }
   }
 
   int unitOffset = 0;
-  for( int i=0; i < num_keys; ++i ) {
+  for( int i=0; i < num_keys; ++i ) 
+  {
     std::cout << "Insert: " << keys[i] << std::endl;
     insert(keys[i], T);
     std::cout << "Tree:" << std::endl;
     printTree(T);
+
     // use default keys for unit tests
-    if (argc == 1) { 
+    if (argc == 1) 
+    { 
       std::stringstream cmt;
       cmt << "contains( " << keys[i] << ") "; 
       unit.assertTrue(cmt.str(), contains( keys[i], T )); 
@@ -312,7 +364,9 @@ int main( int argc, char *argv[] ) {
       unit.assertvectorEquals(fmt.str(), expected, visitor ); 
     }
   }
-  if (argc == 1) unit.printResults(); 
+
+  if (argc == 1) 
+    unit.printResults(); 
 
   // Free up allocated memory
   delete[] keys;

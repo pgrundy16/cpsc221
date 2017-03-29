@@ -173,36 +173,27 @@ void doubleRotateRight( Node *& a ) {
   //
 void balance( Node *& x ) {
 
-  /* When you run out of nodes recursively. */
   if(x == NULL) 
     return;
 
   int h_right  = height(x->right);
   int h_left  = height(x->left);
   
-  if(abs(h_right - h_left) == 1) return;
+  if(abs(h_right - h_left) < 2) return;
   
   if(h_right < h_left)
   {
     if(height(x->left->left) > height(x->left->right))
-    {
       rotateRight(x);
-    } 
     else
-    {
       doubleRotateRight(x);
-    }
   } 
   else
   {
     if(height(x->right->right) > height(x->right->left))
-    {
       rotateLeft(x);
-    }
     else
-    {
       doubleRotateLeft(x);
-    }
   }
 
 }
